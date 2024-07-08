@@ -3,3 +3,25 @@
     margin: 0;
     box-sizing: border-box;
 }
+
+body {
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+#login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+}
+
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-size: 15px;
+}

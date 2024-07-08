@@ -24,9 +24,36 @@ Vue.createApp({
                 let data = await response.json();
                 this.currentUser = data;
                 this.currentPage = "homepage"
-                //Run the get command for quizzes here 
+                //Run the get command for getBooks here 
             } else {
                 this.currentPage = "login";
+            }
+        },
+
+        //POST for session. Allows users to log in
+        loginUser: async function () {
+            let myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            let requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: JSON.stringify(this.user),
+            };
+
+            let response = await fetch(`${URL}/session`, requestOptions);
+            let data = await response.json();
+            if (response.status === 201) {
+                console.log("User was logged in successfully");
+                this.currentUser = data;
+                this.user = {
+                    email: "",
+                    username: "",
+                    password: "",
+                };
+                this.currentPage = "homepage";
+            } else {
+                console.log("Failed to log in user");
             }
         },
     },
