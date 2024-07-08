@@ -38,6 +38,14 @@
                     Already have an account? <div @click="switchPage('login')">Log in!</div>
                 </form>
             </div>
+
+            <div id="homepage" v-if="currentPage === homepage">
+                <h1>Welcome, User!</h1>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                Maiores laudantium quod ex in possimus, excepturi doloremque 
+                minima, impedit corporis animi libero cumque rem fugiat deleniti 
+                officia incidunt. Ea, ab ipsam!
+            </div>
             
         </div>
         <script src="app.js"></script>
