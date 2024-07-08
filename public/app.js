@@ -14,6 +14,9 @@ Vue.createApp({
         };
     },
     methods: {
+        SwitchPage: function (page) {
+            this.currentPage = page;
+        },
         //Allows users to log into their unique profile
         getSession: async function() {
             let response = await fetch(`${URL}/session`);
