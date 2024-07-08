@@ -14,7 +14,7 @@ Vue.createApp({
         };
     },
     methods: {
-        SwitchPage: function (page) {
+        switchPage: function (page) {
             this.currentPage = page;
         },
         //Allows users to log into their unique profile
