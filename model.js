@@ -2,6 +2,11 @@ const mongoose = require("mongoose")
 const bcrypt = require("bcrypt")
 require("dotenv").config()
 mongoose.connect(process.env.DATABASE)
+const bookSchema = new mongoose.Schema({
+    title: {type: String, required: [true, "Book must have a title."]},
+    isbn: {type: Number, require: [true, "Book must have an isbn."]},
+    summary: String
+})
 const userSchema = new mongoose.Schema({
     username: {type: String, required: [true, "Username is required."]},
     email: {type: String, required: [true, "Email is required."], unique: true},
@@ -27,5 +32,6 @@ userSchema.methods.verifyPassword = async function (password) {
         console.log(error)
     }
 }
+const Book = mongoose.model("books", bookSchema)
 const User = mongoose.model("users", userSchema)
-module.exports = {User: User}
+module.exports = {Book: Book, User: User}
