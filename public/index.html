@@ -9,6 +9,34 @@
     </head>
     <body>
         <div id="app">
+            <header>BetterBook</header>
+            <nav>
+
+            </nav>
+            <div id="loginfield" v-if="currentPage === 'login'">
+                Login <br>
+                Email
+                <input type="email">
+                <br>
+                Password
+                <input type="text">
+                <button>Log In</button>
+                <br>    
+                Don't have an account? <div @click="switchPage('signUp')">Sign Up!</div>
+            </div>
+
+            <div id="signup" v-if="currentPage === 'signUp'">
+                Sign Up <br>
+                Email
+                <input type="email">
+                Username
+                <input type="username">
+                Password
+                <input type="text">
+                <br>
+                <button>Register</button>
+                Already have an account? <div @click="switchPage('login')">Log in!</div>
+            </div>
             
         </div>
         <script src="app.js"></script>
