@@ -50,14 +50,12 @@ Vue.createApp({
             let requestOptions = {
                 method: "DELETE",
             };
-53-create-a-homepage-for-users
             let response = await fetch(`${URL}/users/${userID}`, requestOptions);
             if (response.status = 204) {
                 console.log("Deleted account successfully");
             } else {
                 console.log("Failed to delete account");
             }
- 53-create-a-homepage-for-users
         },
 
         //Allows users to log into their unique profile
