@@ -18,8 +18,35 @@ Vue.createApp({
             this.currentPage = page;
         },
 
+        //POST session for User. Allows new users to register
+        registerUser: async function () {
+            let myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            let encodedData = 
+            "username="
+            + encodeURIComponent(this.user.username) + "&email="
+            + encodeURIComponent(this.user.email) + "&password="
+            + encodeURIComponent(this.user.password);
+
+            let requestOptions = {
+                method: "POST",
+                body: encodedData,
+                headers: myHeaders,
+            };
+
+            let response = await fetch(`${URL}/users`, requestOptions);
+            
+            if (response.status === 201) {
+                console.log("Successfully registered user");
+                //this.loginUser();
+            } else {
+                console.log("Failed to register the user");
+            }
+        },
+
         //Allows users to log into their unique profile
-        getSession: async function() {
+        /*getSession: async function() {
             let response = await fetch(`${URL}/session`);
             if (response.status === 200) {
                 let data = await response.json();
@@ -29,20 +56,20 @@ Vue.createApp({
             } else {
                 this.currentPage = "login";
             }
-        },
+        }, */
 
         //POST for session. Allows users to log in
-        loginUser: async function () {
+        /* loginUser: async function () {
             let myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-ww-form-urlencoded");
 
-            /*
+        
             let encodedData = 
             "username="
             + encodeURIComponent(this.user.username) + "&email"
             + encodeURIComponent(this.user.email) + "&password"
             + encodeURIComponent(this.user.password);
-            */
+            
 
             let requestOptions = {
                 method: "POST",
@@ -64,33 +91,7 @@ Vue.createApp({
             } else {
                 console.log("Failed to log in user");
             }
-        },
-
-        //POST session for User. Allows new users to register
-        registerUser: async function () {
-            let myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/x-ww-form-urlencoded");
-
-            let encodedData = 
-            "username="
-            + encodeURIComponent(this.user.username) + "&email"
-            + encodeURIComponent(this.user.email) + "&password"
-            + encodeURIComponent(this.user.password);
-
-            let requestOptions = {
-                method: "POST",
-                body: encodedData,
-                headers: myHeaders,
-            };
-
-            let response = await fetch(`${URL}/users`, requestOptions);
-            if (response.status === 201) {
-                console.log("Successfully registered user");
-                //this.loginUser();
-            } else {
-                console.log("Failed to register the user");
-            }
-        },
+        },*/
     },
     
     created: function() {
