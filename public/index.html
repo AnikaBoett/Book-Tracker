@@ -29,10 +29,10 @@
             <div id="login" v-if="currentPage === 'signUp'">
                 <form @submit.prevent="registerUser()">
                     <div class="loginForm">
-                        Email
-                        <input type="email" v-model="user.email">
                         Username
                         <input type="username" v-model="user.username">
+                        Email
+                        <input type="email" v-model="user.email">
                         Password
                         <input type="text" v-model="user.password">
                         <button>Register</button>
