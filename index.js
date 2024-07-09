@@ -115,6 +115,10 @@ app.get("/session", async function (request, response) {
     console.log(request.session.userID)
     response.send(request.session)
 })
+app.delete("/session", function (request, response) {
+    request.session.userID = undefined
+    response.status(204).send("Logged out.")
+})
 app.listen(8080, function () {
     console.log("Server listening on http://localhost:8080.")
 })
