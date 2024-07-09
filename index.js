@@ -111,6 +111,10 @@ app.post("/session", async function (request, response) {
         return response.status(500).send("Server error.")
     }
 })
+app.get("/session", async function (request, response) {
+    console.log(request.session.userID)
+    response.send(request.session)
+})
 app.listen(8080, function () {
     console.log("Server listening on http://localhost:8080.")
 })
