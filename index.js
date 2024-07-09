@@ -14,6 +14,22 @@ app.get("/users", async function (request, response) {
         response.status(404).send("Users not found.")
     }
 })
+app.post("/users", async function (request, response) {
+    try {
+        let newUser = new model.User({username: request.body.username, email: request.body.email})
+        await newUser.hashPassword(request.body.password)
+        const error = await newUser.validateSync()
+        if (error) {
+            console.log(error)
+            return response.status(422).send(error)
+        }
+        await newUser.save()
+        response.status(201).send("New user created.")
+    } catch (error) {
+        console.log(error)
+        response.status(500).send("Server error.")
+    }
+})
 app.listen(8080, function () {
     console.log("Server listening on http://localhost:8080.")
 })
