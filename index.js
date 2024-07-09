@@ -6,6 +6,18 @@ const app = express()
 app.use(express.static("public"))
 app.use(session({secret: "dsakdsnknqewknjkdfhnwian", saveUninitialized: true, resave: false}))
 app.use(express.urlencoded({extended: true}))
+async function AuthMiddleware(request, response, next) {
+    if (request.session && request.session.userID) {
+        let user = await model.User.findOne({_id: request.session.userID})
+        if (!user) {
+            return response.status(401).send("Unauthenticated.")
+        }
+        request.user = user
+        next()
+    } else {
+        return response.status(401).send("Unauthenticated.")
+    }
+}
 app.get("/users", async function (request, response) {
     try {
         let users = await model.User.find()
@@ -43,8 +55,11 @@ app.post("/users", async function (request, response) {
         return response.status(500).send("Server error.")
     }
 })
-app.delete("/users/:userId", async function (request, response) {
+app.delete("/users/:userId", AuthMiddleware, async function (request, response) {
     try {
+        if (request.user._id.toString() !== request.params.userId) {
+            return response.status(403).send("Not Authenticated.")
+        }
         let isDeleted = await model.User.findOneAndDelete({_id: request.params.userId})
         if (!isDeleted) {
             return response.status(404).send("User not found.")
@@ -55,8 +70,11 @@ app.delete("/users/:userId", async function (request, response) {
         return response.status(500).send("Server error.")
     }
 })
-app.patch("/users/:userId", async function (request, response) {
+app.patch("/users/:userId", AuthMiddleware, async function (request, response) {
     try {
+        if (request.user._id.toString() !== request.params.userId) {
+            return response.status(403).send("Not Authenticated.")
+        }
         let user = await model.User.findOne({_id: request.params.userId})
         if (!user) {
             return response.status(404).send("User not found.")
@@ -117,6 +135,7 @@ app.get("/session", async function (request, response) {
 })
 app.delete("/session", function (request, response) {
     request.session.userID = undefined
+    request.user = undefined
     response.status(204).send("Logged out.")
 })
 app.listen(8080, function () {
