@@ -25,3 +25,36 @@ body {
     gap: 5px;
     font-size: 15px;
 }
+
+#homepage nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    padding: 10px;
+    background-color: navy;
+}
+
+#homefeed {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+}
+
+.mainfeed {
+    grid-column: 2 / 3;
+    display: grid;
+    grid-template-rows: 1fr 5fr;
+}
+
+.mainfeed #homehero {
+    grid-row: 1 / 2;
+}
+
+.booklist {
+    grid-column: 1 / 2;
+}
