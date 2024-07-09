@@ -94,6 +94,23 @@ app.patch("/users/:userId", async function (request, response) {
         return response.status(500).send("Server error.")
     }
 })
+app.post("/session", async function (request, response) {
+    try {
+        let user = await model.User.findOne({email: request.body.email})
+        if (!user) {
+            return response.status(401).send("Authentication failure.")
+        }
+        let isGoodPassword = await user.verifyPassword(request.body.password)
+        if (!isGoodPassword) {
+            return response.status(401).send("Authentication failure.")
+        }
+        request.session.userID = user._id
+        response.status(201).send(request.session)
+    } catch (error) {
+        console.log(error)
+        return response.status(500).send("Server error.")
+    }
+})
 app.listen(8080, function () {
     console.log("Server listening on http://localhost:8080.")
 })
