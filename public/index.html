@@ -28,14 +28,16 @@
 
             <div id="login" v-if="currentPage === 'signUp'">
                 <form>
-                    Email
-                    <input type="email">
-                    Username
-                    <input type="username">
-                    Password
-                    <input type="text">
-                    <button>Register</button>
-                    Already have an account? <div @click="switchPage('login')">Log in!</div>
+                    <div class="loginForm">
+                        Email
+                        <input type="email">
+                        Username
+                        <input type="username">
+                        Password
+                        <input type="text">
+                        <button>Register</button>
+                        Already have an account? <div @click="switchPage('login')">Log in!</div>
+                    </div>
                 </form>
             </div>
 

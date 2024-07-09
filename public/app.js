@@ -17,6 +17,7 @@ Vue.createApp({
         switchPage: function (page) {
             this.currentPage = page;
         },
+
         //Allows users to log into their unique profile
         getSession: async function() {
             let response = await fetch(`${URL}/session`);
@@ -55,6 +56,21 @@ Vue.createApp({
             } else {
                 console.log("Failed to log in user");
             }
+        },
+
+        //POST session for User. Allows new users to register
+        registerUser: async function () {
+            let myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            let requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: JSON.stringify(this.user),
+            };
+
+            let response = await fetch(`${URL}/users`, requestOptions);
+            //Finish up tomorrow
         },
     },
     
