@@ -18,6 +18,15 @@ async function AuthMiddleware(request, response, next) {
         return response.status(401).send("Unauthenticated.")
     }
 }
+app.get("/books", async function (request, response) {
+    try {
+        let books = await model.Book.find()
+        response.send(books)
+    } catch (error) {
+        console.log(error)
+        return response.status(404).send("Users not found.")
+    }
+})
 app.get("/users", async function (request, response) {
     try {
         let users = await model.User.find()
