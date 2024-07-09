@@ -5,8 +5,8 @@ Vue.createApp({
         return {
             currentPage: "login",
             user: {
-                email: "", 
                 username: "",
+                email: "", 
                 password: "",
             },
             currentUser: null,
@@ -17,6 +17,7 @@ Vue.createApp({
         switchPage: function (page) {
             this.currentPage = page;
         },
+
         //Allows users to log into their unique profile
         getSession: async function() {
             let response = await fetch(`${URL}/session`);
@@ -33,12 +34,20 @@ Vue.createApp({
         //POST for session. Allows users to log in
         loginUser: async function () {
             let myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Content-Type", "application/x-ww-form-urlencoded");
+
+            /*
+            let encodedData = 
+            "username="
+            + encodeURIComponent(this.user.username) + "&email"
+            + encodeURIComponent(this.user.email) + "&password"
+            + encodeURIComponent(this.user.password);
+            */
 
             let requestOptions = {
                 method: "POST",
+                body: encodedData,
                 headers: myHeaders,
-                body: JSON.stringify(this.user),
             };
 
             let response = await fetch(`${URL}/session`, requestOptions);
@@ -54,6 +63,32 @@ Vue.createApp({
                 this.currentPage = "homepage";
             } else {
                 console.log("Failed to log in user");
+            }
+        },
+
+        //POST session for User. Allows new users to register
+        registerUser: async function () {
+            let myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-ww-form-urlencoded");
+
+            let encodedData = 
+            "username="
+            + encodeURIComponent(this.user.username) + "&email"
+            + encodeURIComponent(this.user.email) + "&password"
+            + encodeURIComponent(this.user.password);
+
+            let requestOptions = {
+                method: "POST",
+                body: encodedData,
+                headers: myHeaders,
+            };
+
+            let response = await fetch(`${URL}/users`, requestOptions);
+            if (response.status === 201) {
+                console.log("Successfully registered user");
+                //this.loginUser();
+            } else {
+                console.log("Failed to register the user");
             }
         },
     },
