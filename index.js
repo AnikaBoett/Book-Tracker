@@ -14,6 +14,17 @@ app.get("/users", async function (request, response) {
         return response.status(404).send("Users not found.")
     }
 })
+app.get("/users/:userId", async function (request, response) {
+    try {
+        let user = await model.User.findOne({_id: request.params.userId})
+        if (!user) {
+            return response.status(404).send("User not found.")
+        }
+        response.json(user)
+    } catch (error) {
+        return response.status(500).send("Server error.")
+    }
+})
 app.post("/users", async function (request, response) {
     try {
         let newUser = new model.User({username: request.body.username, email: request.body.email})
