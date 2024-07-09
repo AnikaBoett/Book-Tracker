@@ -14,12 +14,12 @@
             <v-app>
             <v-main>
             <div id="login" v-if="currentPage === 'login'">
-                <form>
+                <form @submit.prevent="loginUser()">
                     <div class="loginForm">
                         Email
-                        <input type="email">
+                        <input type="email" v-model="user.email">
                         Password
-                        <input type="text">
+                        <input type="password" v-model="user.password">
                     <button>Log In</button>
                     Don't have an account? <div @click="switchPage('signUp')">Sign Up!</div>
                     </div> 
@@ -34,22 +34,21 @@
                         Email
                         <input type="email" v-model="user.email">
                         Password
-                        <input type="text" v-model="user.password">
+                        <input type="password" v-model="user.password">
                         <button>Register</button>
                         Already have an account? <div @click="switchPage('login')">Log in!</div>
-                        Switch to <div @click="switchPage('homepage')">homepage</div> 
                     </div>
                 </form>
             </div>
 
             <div id="homepage" v-if="currentPage === 'homepage'">
-                <div> Welcome, User! </div>
+                <div> Welcome, {{user.username}} ! </div>
                 <input type="text" placeholder="Search...">
                 <nav>
                         <a href="Home">Home</a>
                         <a href="Profile">Profile</a>
-                        <a href="Signout">Sign Out</a>
                 </nav>
+                <div @click="deleteSession()">Sign Out</div>
                 <div id="homefeed">
                     <div class="booklist">
                         <p>Books read</p>
