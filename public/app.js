@@ -45,6 +45,21 @@ Vue.createApp({
             }
         },
 
+        //Allow users to delete their account if they would like to
+        deleteUser: async function (userID) {
+            let requestOptions = {
+                method: "DELETE",
+            };
+
+            let response = await fetch(`${URL}/users/${userID}`, requestOptions);
+            if (response.status = 204) {
+                console.log("Deleted account successfully");
+            } else {
+                console.log("Failed to delete account");
+            }
+
+        },
+
         //Allows users to log into their unique profile
         /*getSession: async function() {
             let response = await fetch(`${URL}/session`);
