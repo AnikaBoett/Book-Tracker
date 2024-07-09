@@ -39,12 +39,12 @@ Vue.createApp({
             
             if (response.status === 201) {
                 console.log("Successfully registered user");
-                //this.loginUser();
+                this.loginUser();
             } else {
                 console.log("Failed to register the user");
             }
         },
-
+/*
         //Allow users to delete their account if they would like to
         deleteUser: async function (userID) {
             let requestOptions = {
@@ -57,9 +57,9 @@ Vue.createApp({
                 console.log("Failed to delete account");
             }
         },
-
+*/
         //Allows users to log into their unique profile
-        /*getSession: async function() {
+        getSession: async function() {
             let response = await fetch(`${URL}/session`);
             if (response.status === 200) {
                 let data = await response.json();
@@ -69,20 +69,30 @@ Vue.createApp({
             } else {
                 this.currentPage = "login";
             }
-        }, */
+        },
+
+        //Allows users to sign out off their account
+        deleteSession: async function() {
+            let requestOptions = {
+                method: "DELETE",
+            };
+
+            let response = await fetch(`${URL}/session`, requestOptions);
+            if(response.status == 204) {
+                this.currentPage = "login";
+                this.currentUser = null;
+            }
+        },
 
         //POST for session. Allows users to log in
-        /* loginUser: async function () {
+        loginUser: async function () {
+            console.log("Ran loginUser")
             let myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/x-ww-form-urlencoded");
-
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
         
-            let encodedData = 
-            "username="
-            + encodeURIComponent(this.user.username) + "&email"
-            + encodeURIComponent(this.user.email) + "&password"
+            let encodedData = "email="
+            + encodeURIComponent(this.user.email) + "&password="
             + encodeURIComponent(this.user.password);
-            
 
             let requestOptions = {
                 method: "POST",
@@ -96,18 +106,21 @@ Vue.createApp({
                 console.log("User was logged in successfully");
                 this.currentUser = data;
                 this.user = {
+                    username: "",                    
                     email: "",
-                    username: "",
                     password: "",
                 };
                 this.currentPage = "homepage";
             } else {
                 console.log("Failed to log in user");
             }
-        },*/
+        },
+
+
     },
     
     created: function() {
         console.log("Vue app opened");
-    }
+        //this.getSession();
+    },
 }).use(Vuetify.createVuetify()).mount("#app");
