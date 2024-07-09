@@ -27,14 +27,14 @@
             </div>
 
             <div id="login" v-if="currentPage === 'signUp'">
-                <form>
+                <form @submit.prevent="registerUser()">
                     <div class="loginForm">
                         Email
-                        <input type="email">
+                        <input type="email" v-model="user.email">
                         Username
-                        <input type="username">
+                        <input type="username" v-model="user.username">
                         Password
-                        <input type="text">
+                        <input type="text" v-model="user.password">
                         <button>Register</button>
                         Already have an account? <div @click="switchPage('login')">Log in!</div>
                     </div>
