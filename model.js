@@ -4,7 +4,7 @@ require("dotenv").config()
 mongoose.connect(process.env.DATABASE)
 const bookSchema = new mongoose.Schema({
     title: {type: String, required: [true, "Book must have a title."]},
-    isbn: {type: Number, require: [true, "Book must have an isbn."]},
+    isbn: {type: Number, required: [true, "Book must have an isbn."]},
     summary: String
 })
 const userSchema = new mongoose.Schema({
