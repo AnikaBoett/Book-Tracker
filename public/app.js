@@ -10,6 +10,8 @@ Vue.createApp({
                 password: "",
             },
             currentUser: null,
+            books: [],
+
 
         };
     },
@@ -114,6 +116,13 @@ Vue.createApp({
             } else {
                 console.log("Failed to log in user");
             }
+        },
+
+        getBooks: async function () {
+            let response = await fetch(`${URL}/books`);
+            let data = await response.json();
+            this.books = data; 
+            console.log(data);
         },
 
 
