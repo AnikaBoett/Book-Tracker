@@ -128,6 +128,7 @@ Vue.createApp({
             console.log(data);
         },
 
+        //Allow users to add books to their profile
         addBooks: async function () {
             let myHeaders = new Headers();
             myHeaders.append("Content-Type", "x-www-form-urlencoded");
