@@ -5,7 +5,8 @@ mongoose.connect(process.env.DATABASE)
 const bookSchema = new mongoose.Schema({
     title: {type: String, required: [true, "Book must have a title."]},
     isbn: {type: Number, required: [true, "Book must have an isbn."]},
-    summary: String
+    summary: String,
+    owner: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: [true, "Book must have an owner."]}
 })
 const userSchema = new mongoose.Schema({
     username: {type: String, required: [true, "Username is required."]},
@@ -32,6 +33,6 @@ userSchema.methods.verifyPassword = async function (password) {
         console.log(error)
     }
 }
-const Book = mongoose.model("books", bookSchema)
-const User = mongoose.model("users", userSchema)
+const Book = mongoose.model("Book", bookSchema)
+const User = mongoose.model("User", userSchema)
 module.exports = {Book: Book, User: User}
