@@ -8,6 +8,10 @@ Vue.createApp({
                 username: "",
                 email: "", 
                 password: "",
+                bio: "",
+                location: "",
+                displayName: "",
+                interests: [],
             },
             currentUser: null,
             books: [],
@@ -70,6 +74,7 @@ Vue.createApp({
             if (response.status === 200) {
                 let data = await response.json();
                 this.currentUser = data;
+                console.log(data);
                 this.currentPage = "homepage"
                 this.getBooks();
             } else {
@@ -110,8 +115,7 @@ Vue.createApp({
             if (response.status === 201) {
                 console.log("User was logged in successfully");
                 this.currentUser = data;
-                this.user = {
-                    username: "",                    
+                this.user = {                   
                     email: "",
                     password: "",
                 };
@@ -121,6 +125,38 @@ Vue.createApp({
             }
         },
 
+/*
+        updateUserInfo: async function() {
+            let myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            let encodedData = 
+            "username=" 
+            + encodeURIComponent(this.currentUser.username) + "&email=" 
+            + encodeURIComponent(this.currentUser.email) + "&password=" 
+            + encodeURIComponent(this.currentUser.password) + "&bio="
+            + encodeURIComponent(this.currentUser.bio) + "&location="
+            + encodeURIComponent(this.currentUser.location) + "&displayName="
+            + encodeURIComponent(this.currentUser.displayName) + "&interests="
+            + encodeURIComponent(this.currentUser.interests);
+
+            let requestOptions = {
+                method: "PATCH",
+                body: encodedData,
+                headers: myHeaders,
+            };
+
+            let response = await fetch(`${URL}/user/${this.currentUser._id}`,
+                requestOptions
+            );
+            
+            if (response.status === 204) {
+                console.log("Successfully updated user info");
+            } else {
+                console.log("Failed to update the user's info");
+            }
+        },
+*/
         getBooks: async function () {
             let response = await fetch(`${URL}/books`);
             let data = await response.json();
@@ -154,10 +190,24 @@ Vue.createApp({
             }
         },
 
+        deleteBook: async function (bookID) {
+            let requestOptions = {
+                method: DELETE,
+            };
+
+            let response = await fetch(`${URL}/books/${bookID}`, requestOptions);
+            if(response.status === 204) {
+                this.getBooks();
+                console.log("Successfully deleted book");
+            } else {
+                console.log("Failed to delete book");
+            }
+        }
+
     },
     
     created: function() {
         console.log("Vue app opened");
-        //this.getSession();
+        this.getSession();
     },
 }).use(Vuetify.createVuetify()).mount("#app");
