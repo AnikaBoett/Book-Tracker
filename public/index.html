@@ -51,12 +51,16 @@
                 <div @click="deleteSession()">Sign Out</div>
                 <div id="homefeed">
                     <div class="booklist">
-                        <p>Books read</p>
-                        <ul>
-                            <li>Sense and Sensibility</li>
-                            <li>Lord of the Rings</li>
-                            <li>A Hitchhiker's Guide to the Galaxy</li>
-                        </ul>
+                        <p>Add a book</p>
+                        <form @submit.prevent="addBooks()">
+                            <p>Title</p>
+                            <input type="text" v-model="newBook.title">
+                            <p>ISBN</p>
+                            <input type="number" v-model="newBook.isbn">
+                            <p>Summary</p>
+                            <input type="text" v-model="newBook.summary">
+                            <button>Submit</button>
+                        </form>
                     </div>
                     
                     <div class="mainfeed">
