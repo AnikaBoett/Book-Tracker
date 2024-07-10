@@ -55,6 +55,18 @@ app.post("/books", async function (request, response) {
         return response.status(400).send("Book cannot be created.")
     }
 })
+app.delete("/books/:bookId", AuthMiddleware, async function (request, response) {
+    try {
+        let isDeleted = await model.Book.findOneAndDelete({_id: request.params.bookId, owner: request.session.userID})
+        if (!isDeleted) {
+            return response.status(404).send("Book not found.")
+        }
+        response.status(204).send("Removed book.")
+    } catch (error) {
+        console.log(error)
+        return response.status(500).send(error)
+    }
+})
 app.get("/users", async function (request, response) {
     try {
         let users = await model.User.find()
@@ -167,7 +179,6 @@ app.post("/session", async function (request, response) {
     }
 })
 app.get("/session", async function (request, response) {
-    console.log(request.session.userID)
     response.send(request.session)
 })
 app.delete("/session", function (request, response) {
