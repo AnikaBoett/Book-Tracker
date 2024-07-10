@@ -42,7 +42,7 @@
             </div>
 
             <div id="homepage" v-if="currentPage === 'homepage' | currentPage === 'profile'">
-                <div> Welcome, {{user.username}} ! </div>
+                <div> Welcome, {{currentUser.username}} ! </div>
                 <input type="text" placeholder="Search...">
                 <nav>
                     <div @click="switchPage('homepage')">Home</div>
@@ -102,7 +102,24 @@
                 </div>
 
                 <div id="profile" v-if="currentPage === 'profile'">
-                    
+                    <p>Update User Information</p>
+                    <form>
+                        <p>Edit username</p>
+                        <input type="text" v-model="currentUser.username">
+                        <p>Update Email</p>
+                        <input type="email" v-model="currentUser.email">
+                        <p>Change Password</p>
+                        <input type="password" v-model="currentUser.password">
+                        <p>Update Bio</p>
+                        <input type="text" v-model="currentUser.bio">
+                        <p>Update Location</p>
+                        <input type="text" v-model="currentUser.location">
+                        <p>Change Display Name</p>
+                        <input type="text" v-model="currentUser.displayName">
+                        <p>Add Interests</p>
+                        <input type="text" v-model="currentUser.interests">
+                        <button>Update</button>
+                    </form>
                 </div>
             </div>
             </v-main>
