@@ -67,7 +67,7 @@ Vue.createApp({
                 let data = await response.json();
                 this.currentUser = data;
                 this.currentPage = "homepage"
-                //Run the get command for getBooks here 
+                this.getBooks();
             } else {
                 this.currentPage = "login";
             }
