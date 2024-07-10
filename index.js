@@ -160,6 +160,7 @@ app.post("/session", async function (request, response) {
             return response.status(401).send("Authentication failure.")
         }
         request.session.userID = user._id
+        request.session.username = user.username
         response.status(201).send(request.session)
     } catch (error) {
         console.log(error)
