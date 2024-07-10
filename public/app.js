@@ -11,7 +11,11 @@ Vue.createApp({
             },
             currentUser: null,
             books: [],
-
+            newBook: {
+                title: "",
+                isbn: 0,
+                summary: "",
+            },
 
         };
     },
@@ -88,7 +92,6 @@ Vue.createApp({
 
         //POST for session. Allows users to log in
         loginUser: async function () {
-            console.log("Ran loginUser")
             let myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
         
@@ -125,6 +128,30 @@ Vue.createApp({
             console.log(data);
         },
 
+        addBooks: async function () {
+            let myHeaders = new Headers();
+            myHeaders.append("Content-Type", "x-www-form-urlencoded");
+            
+            let encodedData =
+            "title="
+            + encodeURIComponent(this.newBook.title) + "&isbn="
+            + encodeURIComponent(this.newBook.isbn) + "&summary="
+            + encodeURIComponent(this.newBook.summary);
+
+            let requestOptions = {
+                method: "POST",
+                body: encodedData,
+                headers: myHeaders,
+            };
+
+            let response = await fetch(`${URL}/books`, requestOptions);
+
+            if(response.status === 201) {
+                console.log("Successfully added book");
+            } else {
+                console.log("Failed to create book.");
+            }
+        },
 
     },
     
