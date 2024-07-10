@@ -42,7 +42,7 @@ app.get("/books/:bookId", async function (request, response) {
 })
 app.post("/books", async function (request, response) {
     try {
-        let newBook = new model.Book({title: request.body.title, isbn: parseInt(request.body.isbn), summary: request.body.summary})
+        let newBook = new model.Book({title: request.body.title, isbn: parseInt(request.body.isbn), summary: request.body.summary, owner: request.session.userID})
         let error = newBook.validateSync()
         if (error) {
             return response.status(422).json(error.errors)
