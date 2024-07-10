@@ -67,6 +67,37 @@ app.delete("/books/:bookId", AuthMiddleware, async function (request, response) 
         return response.status(500).send(error)
     }
 })
+app.patch("/books/:bookId", AuthMiddleware, async function (request, response) {
+    try {
+        let book = await model.Book.findOne({_id: request.params.bookId})
+        if (!book) {
+            console.log("Book not found.")
+            return response.status(404).send("Book not found.")
+        }
+        if (request.session.userID.toString() !== book.owner._id.toString()) {
+            return response.status(404).send("Unauthenticated.")
+        }
+        if (request.body.title !== "") {
+            book.title = request.body.title
+        }
+        if (request.body.isbn !== "") {
+            book.isbn = request.body.isbn
+        }
+        if (request.body.summary !== "") {
+            book.summary = request.body.summary
+        }
+        const error = await book.validateSync()
+        if (error) {
+            console.log(error)
+            return response.status(422).send(error)
+        }
+        await book.save()
+        response.status(204).send()
+    } catch (error) {
+        console.log(error)
+        return response.status(500).send("Server error.")
+    }
+})
 app.get("/users", async function (request, response) {
     try {
         let users = await model.User.find()
