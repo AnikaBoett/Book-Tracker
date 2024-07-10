@@ -27,6 +27,19 @@ app.get("/books", async function (request, response) {
         return response.status(404).send("Users not found.")
     }
 })
+app.get("/books/:bookId", async function (request, response) {
+    try {
+        let book = await model.Book.findOne({_id: request.params.bookId})
+        if (!book) {
+            console.log("Book not found.")
+            return response.status(404).send("Book not found.") 
+        }
+        response.json(book)
+    } catch (error) {
+        console.log(error)
+        return response.status(404).send("Users not found.")
+    }
+})
 app.get("/users", async function (request, response) {
     try {
         let users = await model.User.find()
