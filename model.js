@@ -5,7 +5,8 @@ mongoose.connect(process.env.DATABASE)
 const bookSchema = new mongoose.Schema({
     title: {type: String, required: [true, "Book must have a title."]},
     isbn: {type: Number, required: [true, "Book must have an isbn."]},
-    summary: String
+    summary: String,
+    owner: {type: mongoose.Schema.ObjectId, ref: "User", required: [true, "Book must have an owner."]}
 })
 const userSchema = new mongoose.Schema({
     username: {type: String, required: [true, "Username is required."]},
