@@ -40,6 +40,21 @@ app.get("/books/:bookId", async function (request, response) {
         return response.status(404).send("Users not found.")
     }
 })
+app.post("/books", async function (request, response) {
+    try {
+        let newBook = new model.Book({title: request.body.title, isbn: parseInt(request.body.isbn), summary: request.body.summary, owner: request.session.userID})
+        let error = newBook.validateSync()
+        if (error) {
+            return response.status(422).json(error.errors)
+        }
+        await newBook.populate("owner", "username")
+        await newBook.save()
+        response.status(201).send("Book created.")
+    } catch (error) {
+        console.log(error)
+        return response.status(400).send("Book cannot be created.")
+    }
+})
 app.get("/users", async function (request, response) {
     try {
         let users = await model.User.find()
