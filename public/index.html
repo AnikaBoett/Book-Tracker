@@ -41,15 +41,16 @@
                 </form>
             </div>
 
-            <div id="homepage" v-if="currentPage === 'homepage'">
+            <div id="homepage" v-if="currentPage === 'homepage' | currentPage === 'profile'">
                 <div> Welcome, {{user.username}} ! </div>
                 <input type="text" placeholder="Search...">
                 <nav>
-                        <a href="Home">Home</a>
-                        <a href="Profile">Profile</a>
+                    <div @click="switchPage('homepage')">Home</div>
+                    <div @click="switchPage('profile')">Profile</div>
+                    <div @click="deleteSession()">Sign Out</div>
                 </nav>
-                <div @click="deleteSession()">Sign Out</div>
-                <div id="homefeed">
+
+                <div id="homefeed" v-if="currentPage === 'homepage'">
                     <div class="booklist">
                         <p>Books read</p>
                         <ul>
@@ -94,6 +95,10 @@
                         unde nihil illum amet vero mollitia dolorum earum tempora deserunt 
                         cupiditate. Voluptate minima illo fuga!
                     </div>
+                </div>
+
+                <div id="profile" v-if="currentPage === 'profile'">
+                    
                 </div>
             </div>
             </v-main>
