@@ -125,7 +125,6 @@ Vue.createApp({
             }
         },
 
-        /*
         updateUserInfo: async function() {
             let myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -146,7 +145,7 @@ Vue.createApp({
                 headers: myHeaders,
             };
 
-            let response = await fetch(`${URL}/user/${this.currentUser._id}`,
+            let response = await fetch(`${URL}/users/${this.currentUser.userID}`,
                 requestOptions
             );
             
@@ -156,7 +155,7 @@ Vue.createApp({
                 console.log("Failed to update the user's info");
             }
         },
-        */
+        
         getBooks: async function () {
             let response = await fetch(`${URL}/books`);
             let data = await response.json();

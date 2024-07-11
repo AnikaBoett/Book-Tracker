@@ -14,6 +14,7 @@
             <v-app>
             <v-main>
             <div id="login" v-if="currentPage === 'login'">
+                <h1>BetterBook</h1>
                 <form @submit.prevent="loginUser()">
                     <div class="loginForm">
                         Email
@@ -21,12 +22,13 @@
                         Password
                         <input type="password" v-model="user.password">
                     <button>Log In</button>
-                    Don't have an account? <div @click="switchPage('signUp')">Sign Up!</div>
+                    Don't have an account? <div class="signUpHover" @click="switchPage('signUp')">Sign Up!</div>
                     </div> 
                 </form>
             </div>
 
             <div id="login" v-if="currentPage === 'signUp'">
+                <h1>Sign Up for BetterBook Today!</h1>
                 <form @submit.prevent="registerUser()">
                     <div class="loginForm">
                         Username
@@ -103,7 +105,7 @@
 
                 <div id="profile" v-if="currentPage === 'profile'">
                     <p>Update User Information</p>
-                    <form>
+                    <form @submit.prevent="updateUserInfo()">
                         <p>Edit username</p>
                         <input type="text" v-model="currentUser.username">
                         <p>Update Email</p>
