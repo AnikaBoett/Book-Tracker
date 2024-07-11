@@ -232,10 +232,6 @@ app.post("/session", async function (request, response) {
         request.session.userID = user._id
         request.session.username = user.username
         request.session.email = user.email
-        request.session.bio = user.bio
-        request.session.location = user.location
-        request.session.displayName = user.displayName
-        request.session.interests = user.interests
         response.status(201).send(request.session)
     } catch (error) {
         console.log(error)
@@ -250,10 +246,6 @@ app.delete("/session", function (request, response) {
     request.user = undefined
     request.session.username = undefined
     request.session.email = undefined
-    request.session.bio = undefined
-    request.session.location = undefined
-    request.session.displayName = undefined
-    request.session.interests = undefined
     response.status(204).send("Logged out.")
 })
 app.listen(8080, function () {
