@@ -44,13 +44,17 @@
             </div>
 
             <div id="homepage" v-if="currentPage === 'homepage' | currentPage === 'profile'">
-                <div> Welcome, {{currentUser.username}} ! </div>
-                <input type="text" placeholder="Search...">
-                <nav>
-                    <div @click="switchPage('homepage')">Home</div>
-                    <div @click="switchPage('profile')">Profile</div>
-                    <div @click="deleteSession()">Sign Out</div>
-                </nav>
+                <div id="homeTopbar">
+                    <div class="searchbar">
+                        <p>Welcome, {{currentUser.username}} !</p>
+                        <input type="text" placeholder="Search books...">
+                    </div>
+                    <nav>
+                        <div @click="switchPage('homepage')">Home</div>
+                        <div @click="switchPage('profile')">Profile</div>
+                        <div @click="deleteSession()">Sign Out</div>
+                    </nav>
+                </div>
 
                 <div id="homefeed" v-if="currentPage === 'homepage'">
                     <div class="booklist">
