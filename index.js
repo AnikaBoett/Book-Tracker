@@ -144,6 +144,81 @@ app.delete("/users/:userId", AuthMiddleware, async function (request, response) 
         return response.status(500).send("Server error.")
     }
 })
+app.get("/profiles", async function (request, response) {
+    try {
+        let profiles = await model.Profile.find()
+        response.send(profiles)
+    } catch (error) {
+        console.log(error)
+        return response.status(500).send("Server error.")
+    }
+})
+app.get("/profiles/:profileId", async function (request, response) {
+    try {
+        let profile = await model.Profile.findOne({_id: request.params.profileId})
+        if (!profile) {
+            console.log("Profile not found.")
+            return response.status(404).send("Profile not found.") 
+        }
+        response.json(profile)
+    } catch (error) {
+        console.log(error)
+        return response.status(500).send("Server error.")
+    }
+})
+app.post("/profiles", async function (request, response) {
+    try {
+        let newProfile = new model.Profile({user: request.session.userID, displayName: request.body.displayName, bio: request.body.bio, location: request.body.location, interests: request.body.interests})
+        let error = newProfile.validateSync()
+        if (error) {
+            return response.status(422).json(error.errors)
+        }
+        await newProfile.populate("owner", "username")
+        await newProfile.save()
+        response.status(201).send("Profile created.")
+    } catch (error) {
+        console.log(error)
+        return response.status(500).send("Server error.")
+    }
+})
+app.delete("/profiles/:profileId", AuthMiddleware, async function (request, response) {
+    try {
+        let isDeleted = await model.Profile.findOneAndDelete({_id: request.params.profileId, user: request.session.userID})
+        if (!isDeleted) {
+            return response.status(404).send("Profile not found.")
+        }
+        response.status(204).send("Removed profile.")
+    } catch (error) {
+        console.log(error)
+        return response.status(500).send("Server error.")
+    }
+})
+app.put("/profiles/:profileId", AuthMiddleware, async function (request, response) {
+    try {
+        let profile = await model.Profile.findOne({_id: request.params.profileId})
+        if (!profile) {
+            console.log("Profile not found.")
+            return response.status(404).send("Profile not found.")
+        }
+        if (request.session.userID.toString() !== profile.user._id.toString()) {
+            return response.status(404).send("Unauthenticated.")
+        }
+        profile.displayName = request.body.displayName
+        profile.bio = request.body.bio
+        profile.location = request.body.location
+        profile.interests = request.body.interests
+        const error = await profile.validateSync()
+        if (error) {
+            console.log(error)
+            return response.status(422).send(error)
+        }
+        await profile.save()
+        response.status(204).send()
+    } catch (error) {
+        console.log(error)
+        return response.status(500).send("Server error.")
+    }
+})
 app.post("/session", async function (request, response) {
     try {
         let user = await model.User.findOne({email: request.body.email})
