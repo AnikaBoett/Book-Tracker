@@ -161,24 +161,30 @@ app.patch("/users/:userId", AuthMiddleware, async function (request, response) {
         }
         if (request.body.username !== "") {
             user.username = request.body.username
+            request.session.username = user.username
         }
         if (request.body.email !== "") {
             user.email = request.body.email
+            request.session.email = user.email
         }
         if (request.body.password !== "") {
             await user.hashPassword(request.body.password)
         }
         if (request.body.bio !== "") {
             user.bio = request.body.bio
+            request.session.bio = user.bio
         }
         if (request.body.location !== "") {
             user.location = request.body.location
+            request.session.location = user.location
         }
         if (request.body.displayName !== "") {
             user.displayName = request.body.displayName
+            request.session.displayName = user.displayName
         }
         if (request.body.interests !== "") {
             user.interests.push(request.body.interests)
+            request.session.interests = user.interests
         }
         const error = await user.validateSync()
         if (error) {
@@ -204,6 +210,11 @@ app.post("/session", async function (request, response) {
         }
         request.session.userID = user._id
         request.session.username = user.username
+        request.session.email = user.email
+        request.session.bio = user.bio
+        request.session.location = user.location
+        request.session.displayName = user.displayName
+        request.session.interests = user.interests
         response.status(201).send(request.session)
     } catch (error) {
         console.log(error)
@@ -216,6 +227,12 @@ app.get("/session", async function (request, response) {
 app.delete("/session", function (request, response) {
     request.session.userID = undefined
     request.user = undefined
+    request.session.username = undefined
+    request.session.email = undefined
+    request.session.bio = undefined
+    request.session.location = undefined
+    request.session.displayName = undefined
+    request.session.interests = undefined
     response.status(204).send("Logged out.")
 })
 app.listen(8080, function () {
