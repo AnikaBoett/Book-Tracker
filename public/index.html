@@ -38,7 +38,7 @@
                         Password
                         <input type="password" v-model="user.password">
                         <button>Register</button>
-                        Already have an account? <div @click="switchPage('login')">Log in!</div>
+                        Already have an account? <div class="signUpHover" @click="switchPage('login')">Log in!</div>
                     </div>
                 </form>
             </div>
@@ -87,19 +87,17 @@
                                 ></v-carousel-item>
                               </v-carousel>
                         </div>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                        Maiores laudantium quod ex in possimus, excepturi doloremque 
-                        minima, impedit corporis animi libero cumque rem fugiat deleniti 
-                        officia incidunt. Ea, ab ipsam! 
-
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. 
-                        Excepturi nulla eos, blanditiis dolorum officiis doloremque repellat 
-                        quaerat. Fugit voluptates dicta, officiis est explicabo minus earum 
-                        harum eius sed aliquam possimus.
-                        Iusto doloremque esse voluptatibus doloribus nisi praesentium 
-                        molestiae necessitatibus veritatis, quidem animi minus optio hic 
-                        unde nihil illum amet vero mollitia dolorum earum tempora deserunt 
-                        cupiditate. Voluptate minima illo fuga!
+                        <div>
+                            <p>Recently Read</p>
+                            <div v-for="book in books">
+                                <div v-if="book.owner === currentUser.userID">
+                                    <p>{{ book.title }}</p>
+                                    <p> {{ book.summary }} </p>
+                                    <button>Edit</button>
+                                    <button @click="deleteBook(book)">Delete</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

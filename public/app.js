@@ -189,19 +189,22 @@ Vue.createApp({
             }
         },
 
-        deleteBook: async function (bookID) {
+        deleteBook: async function (book) {
             let requestOptions = {
-                method: DELETE,
+                method: "DELETE",
             };
-
+            console.log("The book is", book);
+            let bookID = book._id;
+            console.log("Book ID:", bookID);
             let response = await fetch(`${URL}/books/${bookID}`, requestOptions);
+            console.log(response);
             if(response.status === 204) {
                 this.getBooks();
                 console.log("Successfully deleted book");
             } else {
                 console.log("Failed to delete book");
             }
-        }
+        },
 
     },
     
