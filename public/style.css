@@ -38,9 +38,13 @@
     font-size: 15px;
 }
 
+.signUpHover:hover {
+    color: rgba(255, 255, 255, 0.7);
+}
+
 /* Homepage CSS */
 #homepage {
-    background-color: #FFF;
+    background-color: #CACAE4;
 }
 
 #homeTopbar {
@@ -71,6 +75,10 @@
     gap: 50px;
 }
 
+.searchbar input {
+    background-color:rgba(255, 255, 255, 0.7);
+}
+
 #homefeed {
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
@@ -88,9 +96,4 @@
 
 .booklist {
     grid-column: 1 / 2;
-}
-
-.signUpHover:hover {
-    background-color:#9181B3;
-    border-radius:5px;
 }

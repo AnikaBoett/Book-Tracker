@@ -108,12 +108,6 @@
                 <div id="profile" v-if="currentPage === 'profile'">
                     <p>Update User Information</p>
                     <form @submit.prevent="updateUserInfo()">
-                        <p>Edit username</p>
-                        <input type="text" v-model="currentUser.username">
-                        <p>Update Email</p>
-                        <input type="email" v-model="currentUser.email">
-                        <p>Change Password</p>
-                        <input type="password" v-model="currentUser.password">
                         <p>Update Bio</p>
                         <input type="text" v-model="currentUser.bio">
                         <p>Update Location</p>
