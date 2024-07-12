@@ -242,10 +242,10 @@ app.get("/session", async function (request, response) {
     response.send(request.session)
 })
 app.delete("/session", function (request, response) {
-    request.session.userID = undefined
-    request.user = undefined
-    request.session.username = undefined
-    request.session.email = undefined
+    request.session.userID = null
+    request.user = null
+    request.session.username = null
+    request.session.email = null
     response.status(204).send("Logged out.")
 })
 app.listen(8080, function () {
