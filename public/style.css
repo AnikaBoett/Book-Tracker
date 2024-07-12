@@ -52,12 +52,16 @@
 #homeTopbar nav {
     display: flex;
     flex-direction: row;
-    gap: 5px;
+    gap: 10px;
     background-color: #9181B3;
     color: #1D0338;
     padding: 5px 10px 5px 10px;
     border-radius: 0px 0px 0px 5px;
     margin-bottom: 20px;
+}
+
+#homeTopbar nav div:hover {
+    color: white;
 }
 
 .searchbar {
