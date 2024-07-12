@@ -168,7 +168,7 @@ app.get("/profiles/:profileId", async function (request, response) {
 })
 app.post("/profiles", async function (request, response) {
     try {
-        let newProfile = new model.Profile({user: request.session.userID, displayName: request.body.displayName, bio: request.body.bio, location: request.body.location, interests: request.body.interests})
+        let newProfile = new model.Profile({owner: request.session.userID, displayName: request.body.displayName, bio: request.body.bio, location: request.body.location, interests: request.body.interests})
         let error = newProfile.validateSync()
         if (error) {
             return response.status(422).json(error.errors)
