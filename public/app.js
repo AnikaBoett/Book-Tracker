@@ -8,10 +8,6 @@ Vue.createApp({
                 username: "",
                 email: "", 
                 password: "",
-                bio: "",
-                location: "",
-                displayName: "",
-                interests: [],
             },
             currentUser: null,
             books: [],
@@ -20,12 +16,39 @@ Vue.createApp({
                 isbn: 0,
                 summary: "",
             },
-
+            profiles: [],
+            newProfile: {
+                displayName: "",
+                bio: "",
+                location: "",
+                interests: "",
+            },
+            modal: {
+                displayName: "",
+                bio: "",
+                location: "",
+                interests: "",
+                index: -1,
+            },
+            openModal: false,
         };
     },
     methods: {
         switchPage: function (page) {
             this.currentPage = page;
+        },
+
+        toggleModal: function (index = null) {
+            this.openModal = !this.openModal;
+            console.log(this.openModal);
+            if (index !== null) {
+                let current = this.profiles[index];
+                this.modal.index = index;
+                this.modal.displayName = current.displayName;
+                this.modal.bio = current.bio;
+                this.modal.location = current.location;
+                this.modal.interests = current.interests;
+            }
         },
 
         //POST session for User. Allows new users to register
@@ -79,6 +102,7 @@ Vue.createApp({
                 console.log("The current data is", data);
                 this.currentPage = "homepage"
                 this.getBooks();
+                this.getProfile();
             } else {
                 this.currentPage = "login";
             }
@@ -128,6 +152,7 @@ Vue.createApp({
             }
         },
 
+        /*
         updateUserInfo: async function() {
             let myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -158,6 +183,7 @@ Vue.createApp({
                 console.log("Failed to update the user's info");
             }
         },
+        */
         
         getBooks: async function () {
             let response = await fetch(`${URL}/books`);
@@ -208,7 +234,71 @@ Vue.createApp({
                 console.log("Failed to delete book");
             }
         },
+        
+        //GET request for profile information
+        getProfile: async function() {
+            let response = await fetch(`${URL}/profiles`);
+            let data = await response.json();
+            this.profiles = data;
+            console.log(data);
+            console.log("Successfully retrieved profile");
+        },
 
+        //POST request for profile information 
+        createProfile: async function () {
+            let myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+            let encodedData =
+            "&displayName="
+            + encodeURIComponent(this.newProfile.displayName) + "&bio="
+            + encodeURIComponent(this.newProfile.bio) + "&location="
+            + encodeURIComponent(this.newProfile.location) + "&interests="
+            + encodeURIComponent(this.newProfile.interests);
+
+            let requestOptions = {
+                method: "POST", 
+                headers: myHeaders,
+                body: encodedData,
+            };
+
+            let response = await fetch(`${URL}/profiles`, requestOptions);
+            if (response.status === 201) {
+                console.log("User profile successfully created");
+            } else {
+                console.log("Failed to create user profile");
+            }
+        },
+
+        //PUT request for profile
+        editProfile: async function (profile) {
+            let myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            let encodedData =
+            "&displayName="
+            + encodeURIComponent(this.modal.displayName) + "&bio="
+            + encodeURIComponent(this.modal.bio) + "&location="
+            + encodeURIComponent(this.modal.location) + "&interests="
+            + encodeURIComponent(this.modal.interests);
+
+            let requestOptions = {
+                method: "PUT",
+                headers: myHeaders,
+                body: encodedData,
+            };
+
+            let profID = this.profiles[this.modal.index]._id;
+
+            let response = await fetch(`${URL}/profiles/${profID}`,
+                requestOptions
+            );
+
+            if (response.status === 204) {
+                console.log("Successfully updated user info");
+            } else {
+                console.log("Failed to update the user's info");
+            }
+        },
     },
     
     created: function() {
