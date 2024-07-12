@@ -183,7 +183,7 @@ app.post("/profiles", async function (request, response) {
 })
 app.delete("/profiles/:profileId", AuthMiddleware, async function (request, response) {
     try {
-        let isDeleted = await model.Profile.findOneAndDelete({_id: request.params.profileId, user: request.session.userID})
+        let isDeleted = await model.Profile.findOneAndDelete({_id: request.params.profileId, owner: request.session.userID})
         if (!isDeleted) {
             return response.status(404).send("Profile not found.")
         }
@@ -200,7 +200,7 @@ app.put("/profiles/:profileId", AuthMiddleware, async function (request, respons
             console.log("Profile not found.")
             return response.status(404).send("Profile not found.")
         }
-        if (request.session.userID.toString() !== profile.user._id.toString()) {
+        if (request.session.userID.toString() !== profile.owner._id.toString()) {
             return response.status(404).send("Unauthenticated.")
         }
         profile.displayName = request.body.displayName
