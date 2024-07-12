@@ -106,26 +106,44 @@
                 </div>
 
                 <div id="profile" v-if="currentPage === 'profile'">
-                    <div v-for="profile in profiles">
+                    <div v-for="(profile, index) in profiles">
                         <div v-if="profile.owner === currentUser._id">
                             <p>{{ profile.bio }}</p>
                             <p>{{ profile.location }}</p>
                             <p>{{ profile.displayName }}</p>
                             <p>{{ profile.interests }}</p>
+                            <button @click="toggleModal(index)">Edit</button>
+                            <button>Delete</button>
                         </div>
                     </div>
-                    <p>Update User Information</p>
+
+                    <p>Create Your Profile</p>
                     <form @submit.prevent="createProfile()">
-                        <p>Update Bio</p>
+                        <p>Create Bio</p>
                         <input type="text" v-model="newProfile.bio">
-                        <p>Update Location</p>
+                        <p>Create Location</p>
                         <input type="text" v-model="newProfile.location">
-                        <p>Change Display Name</p>
+                        <p>Create Display Name</p>
                         <input type="text" v-model="newProfile.displayName">
                         <p>Add Interests</p>
                         <input type="text" v-model="newProfile.interests">
-                        <button>Update</button>
+                        <button>Create profile</button>
                     </form>
+
+                    <div id="toggleModal" v-show="openModal">
+                        <h1>Edit your Profile</h1>
+                        <form @submit.prevent="editProfile(profile)">
+                            <p>Update Bio</p>
+                            <input type="text" v-model="modal.bio">
+                            <p>Update Location</p>
+                            <input type="text" v-model="modal.location">
+                            <p>Change Display Name</p>
+                            <input type="text" v-model="modal.displayName">
+                            <p>Edit Interests</p>
+                            <input type="text" v-model="modal.interests">
+                            <button>Update profile</button>
+                        </form>
+                    </div>
                 </div>
             </div>
             </v-main>
