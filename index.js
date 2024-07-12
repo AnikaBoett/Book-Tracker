@@ -238,8 +238,22 @@ app.post("/session", async function (request, response) {
         return response.status(500).send("Server error.")
     }
 })
-app.get("/session", async function (request, response) {
-    response.send(request.session)
+app.get("/session", function (request, response) {
+    console.log("session:", request.session)
+    if (request.session && request.session.userID) {
+        model.User.findOne({_id: request.session.userID}).then(function (user) {
+            if (user) {
+                request.user = user
+                request.session.username = user.username
+                request.session.email = user.email
+                response.status(200).send("Authenticated.")
+            } else {
+                response.status(401).send("Not authenticated.")
+            }
+        })
+    } else {
+        response.status(401).send("Not authenticated.")
+    }
 })
 app.delete("/session", function (request, response) {
     request.session.userID = null
