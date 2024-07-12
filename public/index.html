@@ -107,15 +107,15 @@
 
                 <div id="profile" v-if="currentPage === 'profile'">
                     <p>Update User Information</p>
-                    <form @submit.prevent="updateUserInfo()">
+                    <form @submit.prevent="createProfile()">
                         <p>Update Bio</p>
-                        <input type="text" v-model="currentUser.bio">
+                        <input type="text" v-model="newProfile.bio">
                         <p>Update Location</p>
-                        <input type="text" v-model="currentUser.location">
+                        <input type="text" v-model="newProfile.location">
                         <p>Change Display Name</p>
-                        <input type="text" v-model="currentUser.displayName">
+                        <input type="text" v-model="newProfile.displayName">
                         <p>Add Interests</p>
-                        <input type="text" v-model="currentUser.interests">
+                        <input type="text" v-model="newProfile.interests">
                         <button>Update</button>
                     </form>
                 </div>

@@ -20,6 +20,14 @@ Vue.createApp({
                 isbn: 0,
                 summary: "",
             },
+            profiles: [],
+            newProfile: {
+                user: null,
+                displayName: "",
+                bio: "",
+                location: "",
+                interests: "",
+            }
 
         };
     },
@@ -79,6 +87,7 @@ Vue.createApp({
                 console.log("The current data is", data);
                 this.currentPage = "homepage"
                 this.getBooks();
+                this.getProfile();
             } else {
                 this.currentPage = "login";
             }
@@ -128,6 +137,7 @@ Vue.createApp({
             }
         },
 
+        /*
         updateUserInfo: async function() {
             let myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -158,6 +168,7 @@ Vue.createApp({
                 console.log("Failed to update the user's info");
             }
         },
+        */
         
         getBooks: async function () {
             let response = await fetch(`${URL}/books`);
@@ -209,7 +220,39 @@ Vue.createApp({
             }
         },
         
+        //GET request for profile information
+        getProfile: async function() {
+            let response = await fetch(`${URL}/profiles`);
+            let data = await response.json();
+            this.profiles = data;
+            console.log(data);
+            console.log("Successfully retrieved profile");
+        },
 
+        //POST request for profile information 
+        createProfile: async function () {
+            let myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+            let encodedData =
+            "&displayName="
+            + encodeURIComponent(this.newProfile.displayName) + "&bio="
+            + encodeURIComponent(this.newProfile.bio) + "&location="
+            + encodeURIComponent(this.newProfile.location) + "&interests="
+            + encodeURIComponent(this.newProfile.interests);
+
+            let requestOptions = {
+                method: "POST", 
+                headers: myHeaders,
+                body: encodedData,
+            };
+
+            let response = await fetch(`${URL}/profiles`, requestOptions);
+            if (response.status === 201) {
+                console.log("User profile successfully created");
+            } else {
+                console.log("Failed to create user profile");
+            }
+        },
     },
     
     created: function() {
