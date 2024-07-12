@@ -94,7 +94,7 @@
                         <div>
                             <p>Recently Read</p>
                             <div v-for="book in books">
-                                <div v-if="book.owner === currentUser.userID">
+                                <div v-if="book.owner === currentUser._id">
                                     <p>{{ book.title }}</p>
                                     <p> {{ book.summary }} </p>
                                     <button>Edit</button>
@@ -106,6 +106,14 @@
                 </div>
 
                 <div id="profile" v-if="currentPage === 'profile'">
+                    <div v-for="profile in profiles">
+                        <div v-if="profile.owner === currentUser._id">
+                            <p>{{ profile.bio }}</p>
+                            <p>{{ profile.location }}</p>
+                            <p>{{ profile.displayName }}</p>
+                            <p>{{ profile.interests }}</p>
+                        </div>
+                    </div>
                     <p>Update User Information</p>
                     <form @submit.prevent="createProfile()">
                         <p>Update Bio</p>
