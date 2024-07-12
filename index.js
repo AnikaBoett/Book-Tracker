@@ -229,6 +229,7 @@ app.post("/session", async function (request, response) {
         if (!isGoodPassword) {
             return response.status(401).send("Authentication failure.")
         }
+        request.session.user = user
         request.session.userID = user._id
         request.session.username = user.username
         request.session.email = user.email
@@ -238,12 +239,12 @@ app.post("/session", async function (request, response) {
         return response.status(500).send("Server error.")
     }
 })
-app.get("/session", function (request, response) {
+app.get("/session", async function (request, response) {
     console.log("session:", request.session)
-    if (request.session && request.session.userID) {
+    if (request.session && request.user) {
         model.User.findOne({_id: request.session.userID}).then(function (user) {
             if (user) {
-                request.user = user
+                request.session.user = user
                 request.session.userID = user._id
                 request.session.username = user.username
                 request.session.email = user.email
@@ -258,7 +259,7 @@ app.get("/session", function (request, response) {
 })
 app.delete("/session", function (request, response) {
     request.session.userID = null
-    request.user = null
+    request.session.user = null
     request.session.username = null
     request.session.email = null
     response.status(204).send("Logged out.")
