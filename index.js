@@ -144,6 +144,81 @@ app.delete("/users/:userId", AuthMiddleware, async function (request, response) 
         return response.status(500).send("Server error.")
     }
 })
+app.get("/profiles", async function (request, response) {
+    try {
+        let profiles = await model.Profile.find()
+        response.send(profiles)
+    } catch (error) {
+        console.log(error)
+        return response.status(500).send("Server error.")
+    }
+})
+app.get("/profiles/:profileId", async function (request, response) {
+    try {
+        let profile = await model.Profile.findOne({_id: request.params.profileId})
+        if (!profile) {
+            console.log("Profile not found.")
+            return response.status(404).send("Profile not found.") 
+        }
+        response.json(profile)
+    } catch (error) {
+        console.log(error)
+        return response.status(500).send("Server error.")
+    }
+})
+app.post("/profiles", async function (request, response) {
+    try {
+        let newProfile = new model.Profile({owner: request.session.userID, displayName: request.body.displayName, bio: request.body.bio, location: request.body.location, interests: request.body.interests})
+        let error = newProfile.validateSync()
+        if (error) {
+            return response.status(422).json(error.errors)
+        }
+        await newProfile.populate("owner", "username")
+        await newProfile.save()
+        response.status(201).send("Profile created.")
+    } catch (error) {
+        console.log(error)
+        return response.status(500).send("Server error.")
+    }
+})
+app.delete("/profiles/:profileId", AuthMiddleware, async function (request, response) {
+    try {
+        let isDeleted = await model.Profile.findOneAndDelete({_id: request.params.profileId, owner: request.session.userID})
+        if (!isDeleted) {
+            return response.status(404).send("Profile not found.")
+        }
+        response.status(204).send("Removed profile.")
+    } catch (error) {
+        console.log(error)
+        return response.status(500).send("Server error.")
+    }
+})
+app.put("/profiles/:profileId", AuthMiddleware, async function (request, response) {
+    try {
+        let profile = await model.Profile.findOne({_id: request.params.profileId})
+        if (!profile) {
+            console.log("Profile not found.")
+            return response.status(404).send("Profile not found.")
+        }
+        if (request.session.userID.toString() !== profile.owner._id.toString()) {
+            return response.status(404).send("Unauthenticated.")
+        }
+        profile.displayName = request.body.displayName
+        profile.bio = request.body.bio
+        profile.location = request.body.location
+        profile.interests = request.body.interests
+        const error = await profile.validateSync()
+        if (error) {
+            console.log(error)
+            return response.status(422).send(error)
+        }
+        await profile.save()
+        response.status(204).send()
+    } catch (error) {
+        console.log(error)
+        return response.status(500).send("Server error.")
+    }
+})
 app.post("/session", async function (request, response) {
     try {
         let user = await model.User.findOne({email: request.body.email})
@@ -157,10 +232,6 @@ app.post("/session", async function (request, response) {
         request.session.userID = user._id
         request.session.username = user.username
         request.session.email = user.email
-        request.session.bio = user.bio
-        request.session.location = user.location
-        request.session.displayName = user.displayName
-        request.session.interests = user.interests
         response.status(201).send(request.session)
     } catch (error) {
         console.log(error)
@@ -168,17 +239,26 @@ app.post("/session", async function (request, response) {
     }
 })
 app.get("/session", async function (request, response) {
-    response.send(request.session)
+    try {
+        if (request.session && request.session.userID) {
+            let user = await model.User.findOne({_id: request.session.userID})
+            if (user) {
+                return response.status(200).json(user)
+            } else {
+                return response.status(401).send("Authentication failure.")
+            }
+        } else {
+            return response.status(401).send("Not authenticated.")
+        }
+    } catch (error) {
+        console.log(error)
+        return response.status(500).send("Server error.")
+    }
 })
 app.delete("/session", function (request, response) {
     request.session.userID = undefined
-    request.user = undefined
     request.session.username = undefined
     request.session.email = undefined
-    request.session.bio = undefined
-    request.session.location = undefined
-    request.session.displayName = undefined
-    request.session.interests = undefined
     response.status(204).send("Logged out.")
 })
 app.listen(8080, function () {

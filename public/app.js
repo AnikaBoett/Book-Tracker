@@ -71,10 +71,12 @@ Vue.createApp({
         //Allows users to log into their unique profile
         getSession: async function() {
             let response = await fetch(`${URL}/session`);
+            console.log(response);
             if (response.status === 200) {
+                console.log("Successfully retrieved session");
                 let data = await response.json();
                 this.currentUser = data;
-                console.log(data);
+                console.log("The current data is", data);
                 this.currentPage = "homepage"
                 this.getBooks();
             } else {
@@ -90,6 +92,7 @@ Vue.createApp({
 
             let response = await fetch(`${URL}/session`, requestOptions);
             if(response.status == 204) {
+                console.log("User was successfully signed out.");
                 this.currentPage = "login";
                 this.currentUser = null;
             }
@@ -189,19 +192,22 @@ Vue.createApp({
             }
         },
 
-        deleteBook: async function (bookID) {
+        deleteBook: async function (book) {
             let requestOptions = {
-                method: DELETE,
+                method: "DELETE",
             };
-
+            console.log("The book is", book);
+            let bookID = book._id;
+            console.log("Book ID:", bookID);
             let response = await fetch(`${URL}/books/${bookID}`, requestOptions);
+            console.log(response);
             if(response.status === 204) {
                 this.getBooks();
                 console.log("Successfully deleted book");
             } else {
                 console.log("Failed to delete book");
             }
-        }
+        },
 
     },
     

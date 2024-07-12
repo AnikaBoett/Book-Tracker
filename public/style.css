@@ -4,6 +4,7 @@
     box-sizing: border-box;
 }
 
+/*login/register CSS*/
 #login {
     display: flex;
     flex-direction: column;
@@ -13,6 +14,19 @@
     background-color: #CACAE4;
     border-radius: 10px;
     color: #1D0338;
+    height: 100vh;
+}
+
+#login input {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 3px;
+}
+
+#login button{
+    background-color:#9181B3;
+    border-radius:5px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .loginForm {
@@ -24,18 +38,37 @@
     font-size: 15px;
 }
 
-#homepage nav {
+/* Homepage CSS */
+#homepage {
+    background-color: #FFF;
+}
+
+#homeTopbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#homeTopbar nav {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    background-color: #9181B3;
+    color: #1D0338;
+    padding: 5px 10px 5px 10px;
+    border-radius: 0px 0px 0px 5px;
+    margin-bottom: 20px;
+}
+
+#homeTopbar nav div:hover {
+    color: white;
+}
+
+.searchbar {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
-}
-
-nav a {
-    text-decoration: none;
-    color: white;
-    padding: 10px;
-    background-color: navy;
+    gap: 50px;
 }
 
 #homefeed {
@@ -59,5 +92,5 @@ nav a {
 
 .signUpHover:hover {
     background-color:#9181B3;
-    border-radius: 10px;
+    border-radius:5px;
 }
