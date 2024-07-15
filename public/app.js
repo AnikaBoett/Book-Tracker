@@ -215,6 +215,11 @@ Vue.createApp({
 
             if(response.status === 201) {
                 console.log("Successfully added book");
+                this.newBook =  {
+                    title: "",
+                    isbn: 0,
+                    summary: "",
+                },
                 this.getBooks();
             } else {
                 console.log("Failed to create book.");
