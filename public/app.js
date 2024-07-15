@@ -295,8 +295,25 @@ Vue.createApp({
 
             if (response.status === 204) {
                 console.log("Successfully updated user info");
+                this.toggleModal();
             } else {
                 console.log("Failed to update the user's info");
+            }
+        },
+
+        //DELETE for profile 
+        deleteProfile: async function (index) {
+            let requestOptions = {
+                method: "DELETE",
+            };
+
+            let profileID = this.profiles[index]._id;
+            let response = await fetch(`${URL}/profiles/${profileID}`, requestOptions);
+            if(response.status == 204) {
+                this.profiles.splice(index, 1);
+                console.log("Profile successfully deleted");
+            } else {
+                alert("Unable to find or delete profile");
             }
         },
     },
