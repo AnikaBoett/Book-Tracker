@@ -147,6 +147,7 @@ Vue.createApp({
                     password: "",
                 };
                 this.currentPage = "homepage";
+                this.getProfile();
             } else {
                 console.log("Failed to log in user");
             }
@@ -264,6 +265,7 @@ Vue.createApp({
             let response = await fetch(`${URL}/profiles`, requestOptions);
             if (response.status === 201) {
                 console.log("User profile successfully created");
+                this.getProfile();
             } else {
                 console.log("Failed to create user profile");
             }
@@ -296,6 +298,7 @@ Vue.createApp({
             if (response.status === 204) {
                 console.log("Successfully updated user info");
                 this.toggleModal();
+                this.getProfile();
             } else {
                 console.log("Failed to update the user's info");
             }
