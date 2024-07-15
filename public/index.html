@@ -7,16 +7,24 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vuetify@3.6.11/dist/vuetify.min.css">
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/vuetify@3.6.11/dist/vuetify.min.js"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
         <title>BetterBook</title>
     </head>
     <body>
         <div id="app">
             <v-app>
             <v-main>
+
+            <div id="spashpage" v-if="currentPage === 'splash'">
+                <h1>Join Millions of Users Today!</h1>
+            </div>
+
             <div id="login" v-if="currentPage === 'login'">
                 <h1>BetterBook</h1>
                 <form @submit.prevent="loginUser()">
-                    <div class="loginForm">
+                    <div class="loginForm" placeholder="YourEmail@YourEmail.com">
                         Email
                         <input type="email" v-model="user.email">
                         Password
@@ -28,19 +36,21 @@
             </div>
 
             <div id="login" v-if="currentPage === 'signUp'">
+                <div id="paddingsquare">
                 <h1>Sign Up for BetterBook Today!</h1>
-                <form @submit.prevent="registerUser()">
-                    <div class="loginForm">
-                        Username
-                        <input type="username" v-model="user.username">
-                        Email
-                        <input type="email" v-model="user.email">
-                        Password
-                        <input type="password" v-model="user.password">
-                        <button>Register</button>
-                        Already have an account? <div class="signUpHover" @click="switchPage('login')">Log in!</div>
-                    </div>
-                </form>
+                    <form @submit.prevent="registerUser()">
+                        <div class="loginForm">
+                            Username
+                            <input type="username" v-model="user.username">
+                            Email
+                            <input type="email" v-model="user.email">
+                            Password
+                            <input type="password" v-model="user.password">
+                            <button>Register</button>
+                            Already have an account? <div class="signUpHover" @click="switchPage('login')">Log in!</div>
+                        </div>
+                    </form>
+                </div>
             </div>
 
             <div id="homepage" v-if="currentPage === 'homepage' | currentPage === 'profile'">
@@ -106,32 +116,37 @@
                 </div>
 
                 <div id="profile" v-if="currentPage === 'profile'">
-                    <div v-for="(profile, index) in profiles">
-                        <div v-if="profile.owner === currentUser._id">
-                            <p>{{ profile.bio }}</p>
-                            <p>{{ profile.location }}</p>
-                            <p>{{ profile.displayName }}</p>
-                            <p>{{ profile.interests }}</p>
-                            <button @click="toggleModal(index)">Edit</button>
-                            <button>Delete</button>
+                    <div class="profileDisplay">
+                        <div v-for="(profile, index) in profiles">
+                            <div v-if="profile.owner === currentUser._id">
+                                <p>{{ profile.bio }}</p>
+                                <p>{{ profile.location }}</p>
+                                <p>{{ profile.displayName }}</p>
+                                <p>{{ profile.interests }}</p>
+                                <button @click="toggleModal(index)">Edit</button>
+                                <button @click="deleteProfile(index)">Delete</button>
+                            </div>
                         </div>
                     </div>
 
-                    <p>Create Your Profile</p>
-                    <form @submit.prevent="createProfile()">
-                        <p>Create Bio</p>
-                        <input type="text" v-model="newProfile.bio">
-                        <p>Create Location</p>
-                        <input type="text" v-model="newProfile.location">
-                        <p>Create Display Name</p>
-                        <input type="text" v-model="newProfile.displayName">
-                        <p>Add Interests</p>
-                        <input type="text" v-model="newProfile.interests">
-                        <button>Create profile</button>
-                    </form>
+                    <div id="profileCreator">
+                        <h1>Create Your Profile</h1>
+                        <form @submit.prevent="createProfile()">
+                            <p>Create Bio</p>
+                            <input type="text" v-model="newProfile.bio">
+                            <p>Create Location</p>
+                            <input type="text" v-model="newProfile.location">
+                            <p>Create Display Name</p>
+                            <input type="text" v-model="newProfile.displayName">
+                            <p>Add Interests</p>
+                            <input type="text" v-model="newProfile.interests"> <br>
+                            <button>Create profile</button>
+                        </form>
+                    </div>
 
-                    <div id="toggleModal" v-show="openModal">
+                    <div class="modal" v-show="openModal">
                         <h1>Edit your Profile</h1>
+                        <p @click="toggleModal()">X</p>
                         <form @submit.prevent="editProfile(profile)">
                             <p>Update Bio</p>
                             <input type="text" v-model="modal.bio">
@@ -144,6 +159,7 @@
                             <button>Update profile</button>
                         </form>
                     </div>
+                    <button>Delete Your Account (Not working yet)</button>
                 </div>
             </div>
             </v-main>
