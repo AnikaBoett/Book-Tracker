@@ -255,7 +255,6 @@ Vue.createApp({
             if (index !== null) {
                 let current = this.books[index];
                 console.log("The book I am editing is:", current);
-                console.log(current);
                 this.modalBook.index = index;
                 this.modalBook.title = current.title;
                 this.modalBook.isbn = current.isbn;
