@@ -142,10 +142,12 @@ Vue.createApp({
             if (response.status === 201) {
                 console.log("User was logged in successfully");
                 this.currentUser = data;
-                this.user = {                   
+                this.user = {
+                    username: "",
                     email: "",
-                    password: "",
-                };
+                    password: "", 
+                }
+                this.getSession();
                 this.currentPage = "homepage";
             } else {
                 console.log("Failed to log in user");
@@ -213,6 +215,7 @@ Vue.createApp({
 
             if(response.status === 201) {
                 console.log("Successfully added book");
+                this.getBooks();
             } else {
                 console.log("Failed to create book.");
             }
@@ -264,6 +267,7 @@ Vue.createApp({
             let response = await fetch(`${URL}/profiles`, requestOptions);
             if (response.status === 201) {
                 console.log("User profile successfully created");
+                this.getProfile();
             } else {
                 console.log("Failed to create user profile");
             }
@@ -295,8 +299,26 @@ Vue.createApp({
 
             if (response.status === 204) {
                 console.log("Successfully updated user info");
+                this.toggleModal();
+                this.getProfile();
             } else {
                 console.log("Failed to update the user's info");
+            }
+        },
+
+        //DELETE for profile 
+        deleteProfile: async function (index) {
+            let requestOptions = {
+                method: "DELETE",
+            };
+
+            let profileID = this.profiles[index]._id;
+            let response = await fetch(`${URL}/profiles/${profileID}`, requestOptions);
+            if(response.status == 204) {
+                this.profiles.splice(index, 1);
+                console.log("Profile successfully deleted");
+            } else {
+                alert("Unable to find or delete profile");
             }
         },
     },
