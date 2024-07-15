@@ -7,7 +7,8 @@ const userSchema = new mongoose.Schema({username: {type: String, required: [true
     delete ret.encryptedPassword
 }}})
 const profileSchema = new mongoose.Schema({owner: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: [true, "Profile must be associated with a user."]}, displayName: {type: String, required: [true, "Profile must have a display name."]}, bio: {type: String, required: [true, "Profile must have a bio."]}, location: {type: String, required: [true, "Profile must have a location."]}, interests: {type: String, required: [true, "Profile must have interests."]}})
-const reviewSchema = new mongoose.Schema({owner: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: [true, "Review must be associated with a user."]}, body: {type: String, required: [true, "Review must have a body."]}, title: {type: String, required: [true, "Review must have a title."]}, book: {type: mongoose.Schema.Types.ObjectId, ref: "Book", required: [true, "Review must be linked to a book."]}})
+const reviewSchema = new mongoose.Schema({owner: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: [true, "Review must be associated with a user."]}, body: {type: String, required: [true, "Review must have a body."]}, title: {type: String, required: [true, "Review must have a title."]}, book: {type: mongoose.Schema.Types.ObjectId, ref: "Book", required: [true, "Review must be linked to a book."]}, comments: [{type: mongoose.Schema.Types.ObjectId, ref: "Comment"}]})
+const commentSchema = new mongoose.Schema({owner: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: [true, "Comment must be associated with a user."]}, body: {type: String, required: [true, "Comment must have a body."]}, review: {type: mongoose.Schema.Types.ObjectId, ref: "Review", required: [true, "Comment must be linked to a review."]}})
 userSchema.methods.hashPassword = async function (password) {
     try {
         let hashedPassword = await bcrypt.hash(password, 12)
@@ -28,4 +29,5 @@ const Book = mongoose.model("Book", bookSchema)
 const User = mongoose.model("User", userSchema)
 const Profile = mongoose.model("Profile", profileSchema)
 const Review = mongoose.model("Review", reviewSchema)
-module.exports = {Book: Book, User: User, Profile: Profile, Review: Review}
+const Comment = mongoose.model("Comment", commentSchema)
+module.exports = {Book: Book, User: User, Profile: Profile, Review: Review, Comment: Comment}
