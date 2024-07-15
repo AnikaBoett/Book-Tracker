@@ -142,6 +142,11 @@ Vue.createApp({
             if (response.status === 201) {
                 console.log("User was logged in successfully");
                 this.currentUser = data;
+                this.user = {
+                    username: "",
+                    email: "",
+                    password: "", 
+                }
                 this.getSession();
                 this.currentPage = "homepage";
             } else {
@@ -210,6 +215,7 @@ Vue.createApp({
 
             if(response.status === 201) {
                 console.log("Successfully added book");
+                this.getBooks();
             } else {
                 console.log("Failed to create book.");
             }
