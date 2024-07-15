@@ -251,10 +251,12 @@ Vue.createApp({
         },
 
         toggleBookModal: function (index = null) {
+            let modal = document.getElementById("Edit-Modal");
+            modal.showModal();
             this.openBookModal = !this.openBookModal;
             if (index !== null) {
                 let current = this.books[index];
-                console.log("The book I am editing is:", current);
+                //console.log("The book I am editing is:", current);
                 this.modalBook.index = index;
                 this.modalBook.title = current.title;
                 this.modalBook.isbn = current.isbn;

@@ -113,7 +113,7 @@
                             </div>
                         </div>
                         
-                        <div class="modal" v-show="openBookModal">
+                        <dialog class="modal" id="Edit-Modal" v-show="openBookModal">
                             <p>Edit Book</p>
                             <p @click="toggleBookModal()">X</p>
                             <form @submit.prevent="editBook(book)">
@@ -125,7 +125,7 @@
                                 <input type="text" v-model="modalBook.summary">
                                 <button>Update profile</button>
                             </form>
-                        </div>
+                        </dialog>
                     </div>
                 </div>
 
