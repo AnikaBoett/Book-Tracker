@@ -30,7 +30,14 @@ Vue.createApp({
                 interests: "",
                 index: -1,
             },
+            modalBook: {
+                title: "",
+                isbn: 0,
+                summary: "",
+                index: -1,
+            },
             openModal: false,
+            openBookModal: false,
         };
     },
     methods: {
@@ -242,6 +249,48 @@ Vue.createApp({
                 console.log("Failed to delete book");
             }
         },
+
+        toggleBookModal: function (index = null) {
+            this.openBookModal = !this.openBookModal;
+            if (index !== null) {
+                let current = this.books[index];
+                console.log("The book I am editing is:", current);
+                console.log(current);
+                this.modalBook.index = index;
+                this.modalBook.title = current.title;
+                this.modalBook.isbn = current.isbn;
+                this.modalBook.summary = current.summary;
+            }
+        },
+
+        editBook: async function (book) {
+            let myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            let encodedData =
+            "title="
+            + encodeURIComponent(this.modalBook.title) + "&isbn="
+            + encodeURIComponent(this.modalBook.isbn) + "&summary="
+            + encodeURIComponent(this.modalBook.summary);
+
+            let requestOptions = {
+                method: "PUT",
+                headers: myHeaders,
+                body: encodedData,
+            };
+
+            let bookID = this.books[this.modalBook.index]._id;
+            console.log(this.books[this.modalBook.index]._id);
+            let response = await fetch(`${URL}/books/${bookID}`, requestOptions);
+
+            if (response.status === 204) {
+                console.log("Successfully updated the book");
+                this.getBooks();
+                this.toggleBookModal();
+            } else {
+                console.log("Failed to update the book");
+            }
+        },
         
         //GET request for profile information
         getProfile: async function() {
@@ -284,7 +333,7 @@ Vue.createApp({
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
             let encodedData =
-            "&displayName="
+            "displayName="
             + encodeURIComponent(this.modal.displayName) + "&bio="
             + encodeURIComponent(this.modal.bio) + "&location="
             + encodeURIComponent(this.modal.location) + "&interests="
