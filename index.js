@@ -283,6 +283,18 @@ app.get("/reviews/:reviewId", async function (request, response) {
         return response.status(500).send("Server error.")
     }
 })
+app.delete("/reviews/:reviewId", AuthMiddleware, async function (request, response) {
+    try {
+        let isDeleted = await model.Review.findOneAndDelete({_id: request.params.reviewId, owner: request.session.userID})
+        if (!isDeleted) {
+            return response.status(404).send("Review not found.")
+        }
+        response.status(204).send("Removed review.")
+    } catch (error) {
+        console.log(error)
+        return response.status(500).send("Server error.")
+    }
+})
 app.listen(8080, function () {
     console.log("Server listening on http://localhost:8080.")
 })
