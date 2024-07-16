@@ -38,11 +38,17 @@ Vue.createApp({
             },
             openModal: false,
             openBookModal: false,
+            openDeleteModal: false,
         };
     },
     methods: {
         switchPage: function (page) {
             this.currentPage = page;
+        },
+
+        toggleDeleteModal: function () {
+            this.openDeleteModal = !this.openDeleteModal;
+            console.log(this.openModal);
         },
 
         toggleModal: function (index = null) {
@@ -84,7 +90,7 @@ Vue.createApp({
                 console.log("Failed to register the user");
             }
         },
-/*
+
         //Allow users to delete their account if they would like to
         deleteUser: async function (userID) {
             let requestOptions = {
@@ -93,11 +99,12 @@ Vue.createApp({
             let response = await fetch(`${URL}/users/${userID}`, requestOptions);
             if (response.status = 204) {
                 console.log("Deleted account successfully");
+                this.switchPage('login');
             } else {
                 console.log("Failed to delete account");
             }
         },
-*/
+
         //Allows users to log into their unique profile
         getSession: async function() {
             let response = await fetch(`${URL}/session`);
@@ -160,39 +167,6 @@ Vue.createApp({
                 console.log("Failed to log in user");
             }
         },
-
-        /*
-        updateUserInfo: async function() {
-            let myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-            let encodedData = 
-            "username=" 
-            + encodeURIComponent(this.currentUser.username) + "&email=" 
-            + encodeURIComponent(this.currentUser.email) + "&password=" 
-            + encodeURIComponent(this.currentUser.password) + "&bio="
-            + encodeURIComponent(this.currentUser.bio) + "&location="
-            + encodeURIComponent(this.currentUser.location) + "&displayName="
-            + encodeURIComponent(this.currentUser.displayName) + "&interests="
-            + encodeURIComponent(this.currentUser.interests);
-
-            let requestOptions = {
-                method: "PATCH",
-                body: encodedData,
-                headers: myHeaders,
-            };
-
-            let response = await fetch(`${URL}/users/${this.currentUser.userID}`,
-                requestOptions
-            );
-            
-            if (response.status === 204) {
-                console.log("Successfully updated user info");
-            } else {
-                console.log("Failed to update the user's info");
-            }
-        },
-        */
         
         getBooks: async function () {
             let response = await fetch(`${URL}/books`);
@@ -251,10 +225,12 @@ Vue.createApp({
         },
 
         toggleBookModal: function (index = null) {
+            let modal = document.getElementById("Edit-Modal");
+            modal.showModal();
             this.openBookModal = !this.openBookModal;
             if (index !== null) {
                 let current = this.books[index];
-                console.log("The book I am editing is:", current);
+                //console.log("The book I am editing is:", current);
                 this.modalBook.index = index;
                 this.modalBook.title = current.title;
                 this.modalBook.isbn = current.isbn;

@@ -113,7 +113,7 @@
                             </div>
                         </div>
                         
-                        <div class="modal" v-show="openBookModal">
+                        <dialog class="modal" id="Edit-Modal" v-show="openBookModal">
                             <p>Edit Book</p>
                             <p @click="toggleBookModal()">X</p>
                             <form @submit.prevent="editBook(book)">
@@ -125,7 +125,7 @@
                                 <input type="text" v-model="modalBook.summary">
                                 <button>Update profile</button>
                             </form>
-                        </div>
+                        </dialog>
                     </div>
                 </div>
 
@@ -173,7 +173,19 @@
                             <button>Update profile</button>
                         </form>
                     </div>
-                    <button>Delete Your Account (Not working yet)</button>
+                    <button @click="toggleDeleteModal()">Delete Your Account</button>
+
+                    <div class="modal" id="Edit-Modal" v-show="openDeleteModal">
+                        <h1>** WARNING **</h1>
+                        <p>Are you sure you want to delete your account?
+                            All your shelves and assosiated data will be lost.
+                        </p>
+                        <div class="delete" @click="deleteUser(currentUser._id)">
+                            Yes, delete my account and assosiated data</div>
+                        <div class="dontDelete" @click="toggleDeleteModal()">
+                            I do not want to delete my account
+                        </div>
+                    </div>
                 </div>
             </div>
             </v-main>
