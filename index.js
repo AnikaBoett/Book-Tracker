@@ -261,6 +261,28 @@ app.delete("/session", function (request, response) {
     request.session.email = undefined
     response.status(204).send("Logged out.")
 })
+app.get("/reviews", async function (request, response) {
+    try {
+        let reviews = await model.Review.find()
+        response.send(reviews)
+    } catch (error) {
+        console.log(error)
+        return response.status(404).send("Users not found.")
+    }
+})
+app.get("/reviews/:reviewId", async function (request, response) {
+    try {
+        let review = await model.Review.findOne({_id: request.params.reviewId})
+        if (!review) {
+            console.log("Review not found.")
+            return response.status(404).send("Review not found.") 
+        }
+        response.json(review)
+    } catch (error) {
+        console.log(error)
+        return response.status(500).send("Server error.")
+    }
+})
 app.listen(8080, function () {
     console.log("Server listening on http://localhost:8080.")
 })
