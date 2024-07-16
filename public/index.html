@@ -103,14 +103,28 @@
                         </div>
                         <div>
                             <p>Recently Read</p>
-                            <div v-for="book in books">
+                            <div v-for="(book, index) in books">
                                 <div v-if="book.owner === currentUser._id">
                                     <p>{{ book.title }}</p>
                                     <p> {{ book.summary }} </p>
-                                    <button>Edit</button>
+                                    <button @click="toggleBookModal(index)">Edit</button>
                                     <button @click="deleteBook(book)">Delete</button>
                                 </div>
                             </div>
+                        </div>
+                        
+                        <div class="modal" v-show="openBookModal">
+                            <p>Edit Book</p>
+                            <p @click="toggleBookModal()">X</p>
+                            <form @submit.prevent="editBook(book)">
+                                <p>Update Title</p>
+                                <input type="text" v-model="modalBook.title">
+                                <p>Update ISBN</p>
+                                <input type="number" v-model="modalBook.isbn">
+                                <p>Update Summary</p>
+                                <input type="text" v-model="modalBook.summary">
+                                <button>Update profile</button>
+                            </form>
                         </div>
                     </div>
                 </div>
