@@ -107,46 +107,60 @@
                                 <div v-if="book.owner === currentUser._id">
                                     <p>{{ book.title }}</p>
                                     <p> {{ book.summary }} </p>
-                                    <v-btn @click="toggleBookModal(index)"> 
-                                        Edit
-                                    </v-btn>
-                                    <button @click="deleteBook(book)">Delete</button>
+                                    <v-btn @click="toggleBookModal(index)"> Edit </v-btn>
+                                    <v-btn @click="deleteBook(book)"> Delete </v-btn>
+                                    <v-btn @click="beginReview(book)"> Leave a Review </v-btn>
                                 </div>
                             </div>
-                        </div> 
-                        <div class="book-edit-field">     
-                            <v-dialog class="modal" id="Edit-Modal" v-model="dialog">
-                                <v-card prepend-icon="mdi-account" title="Book Information">
-                                    <v-card-text>
-                                        <v-row dense>
-                                        <v-col>
-                                            <v-text-field label="Book Title" 
-                                            v-model="modalBook.title"></v-text-field>
-                                        </v-col>
-                            
-                                        <v-col>
-                                            <v-text-field label="ISBN" 
-                                            v-model="modalBook.isbn"
-                                            type="number"></v-text-field>
-                                        </v-col>
-                            
-                                        <v-col>
-                                            <v-text-field
-                                            hint="What did you think?"
-                                            label="Summary"
-                                            v-model="modalBook.summary"
-                                            ></v-text-field>
-                                        </v-col>
-                                        </v-row>
-                                        <v-btn text="Close" variant="plain" @click="dialog = false"></v-btn>
-                                        <v-btn
-                                        color="primary"
-                                        text="Save"
-                                        variant="tonal"
-                                        @click="editBook(book)"
-                                    ></v-btn>
-                            </v-dialog>                    
-                        </div>
+                        </div>    
+                        <v-dialog class="modal" id="Edit-Modal" v-model="dialog">
+                            <v-card title="Book Information">
+                                <v-card-text>
+                                    <v-row dense>
+                                    <v-col>
+                                        <v-text-field label="Book Title" 
+                                        v-model="modalBook.title"></v-text-field>
+                                    </v-col>
+                        
+                                    <v-col>
+                                        <v-text-field label="ISBN" 
+                                        v-model="modalBook.isbn"
+                                        type="number"></v-text-field>
+                                    </v-col>
+                        
+                                    <v-col>
+                                        <v-text-field
+                                        hint="What did you think?"
+                                        label="Summary"
+                                        v-model="modalBook.summary"
+                                        ></v-text-field>
+                                    </v-col>
+                                    </v-row>
+                                    <v-btn text="Close" variant="plain" @click="dialog = false"></v-btn>
+                                    <v-btn
+                                    text="Save"
+                                    variant="tonal"
+                                    @click="editBook(book)"
+                                ></v-btn>
+                        </v-dialog>               
+                        <v-dialog class="modal" v-model="leaveReview">
+                            <v-card title="Leave a Review">
+                                <v-col>
+                                    <v-text-field
+                                    label="Review Title"
+                                    v-model="newReview.title">
+                                    </v-text-field>
+                                </v-col>
+                                <v-col>
+                                    <v-text-field
+                                    label="What did you think?"
+                                    v-model="newReview.body">
+                                    </v-text-field>
+                                </v-col>
+                                <v-btn text="Save" @click="createReview()"></v-btn>
+                                <v-btn text="Cancel" @click="leaveReview = false"></v-btn>
+                            </v-card>
+                        </v-dialog>  
                     </div>
                 </div>
 
