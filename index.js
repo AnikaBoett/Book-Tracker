@@ -283,6 +283,22 @@ app.get("/reviews/:reviewId", async function (request, response) {
         return response.status(500).send("Server error.")
     }
 })
+app.post("/reviews", async function (request, response) {
+    try {
+        let newReview = new model.Review({owner: request.session.userID, body: request.body.body, title: request.body.title, book: request.body.book})
+        let error = newReview.validateSync()
+        if (error) {
+            return response.status(422).json(error.errors)
+        }
+        await newReview.populate("owner", "username")
+        await newReview.populate("book", "title isbn summary")
+        await newReview.save()
+        response.status(201).send("Review created.")
+    } catch (error) {
+        console.log(error)
+        return response.status(500).send("Server error.")
+    }
+})
 app.delete("/reviews/:reviewId", AuthMiddleware, async function (request, response) {
     try {
         let isDeleted = await model.Review.findOneAndDelete({_id: request.params.reviewId, owner: request.session.userID})
@@ -290,6 +306,30 @@ app.delete("/reviews/:reviewId", AuthMiddleware, async function (request, respon
             return response.status(404).send("Review not found.")
         }
         response.status(204).send("Removed review.")
+    } catch (error) {
+        console.log(error)
+        return response.status(500).send("Server error.")
+    }
+})
+app.put("/reviews/:reviewId", AuthMiddleware, async function (request, response) {
+    try {
+        let review = await model.Review.findOne({_id: request.params.reviewId})
+        if (!review) {
+            console.log("Review not found.")
+            return response.status(404).send("Review not found.")
+        }
+        if (request.session.userID.toString() !== review.owner._id.toString()) {
+            return response.status(404).send("Unauthenticated.")
+        }
+        review.title = request.body.title
+        review.body = request.body.body
+        const error = await review.validateSync()
+        if (error) {
+            console.log(error)
+            return response.status(422).send(error)
+        }
+        await review.save()
+        response.status(204).send()
     } catch (error) {
         console.log(error)
         return response.status(500).send("Server error.")
