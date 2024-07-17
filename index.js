@@ -335,6 +335,21 @@ app.put("/reviews/:reviewId", AuthMiddleware, async function (request, response)
         return response.status(500).send("Server error.")
     }
 })
+app.get("/comments", async function (request, response) {
+
+})
+app.get("/comments/:commentId", async function (request, response) {
+
+})
+app.post("/comments", async function (request, response) {
+
+})
+app.delete("/comments/:commentId", AuthMiddleware, async function (request, response) {
+
+})
+app.put("/comments/:commentId", AuthMiddleware, async function (request, response) {
+    
+})
 app.listen(8080, function () {
     console.log("Server listening on http://localhost:8080.")
 })
