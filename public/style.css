@@ -168,3 +168,39 @@
 .modal p:hover{
     cursor: pointer;
 }
+
+dialog {
+    outline: none;
+    border: none;
+    border-radius: 10px;
+}
+
+dialog form {
+    display: flex;
+    flex-direction: column;
+}
+
+dialog form div {
+    display: grid;
+    grid-template-columns: 100px 200px;
+}
+
+dialog form div p {
+    grid-column: 1 / 2;
+}
+
+dialog form div input {
+    grid-column: 2 / 3;
+}
+
+#Edit-Modal button {
+    background-color: #9181B3;
+    margin: 20px;
+    border-radius: 5px;
+}
+
+.exit {
+    background-color: white;
+    padding: 5px;
+    float: left;
+}
