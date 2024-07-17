@@ -113,6 +113,10 @@
     grid-column: 1 / 2;
 }
 
+.book-feed {
+    grid-column: 3 / 4;
+}
+
 /*Profile Styling*/
 #profile {
     background-color: #CACAE4;
