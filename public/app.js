@@ -39,6 +39,7 @@ Vue.createApp({
             openModal: false,
             openBookModal: false,
             openDeleteModal: false,
+            dialog: false,
         };
     },
     methods: {
@@ -225,12 +226,13 @@ Vue.createApp({
         },
 
         toggleBookModal: function (index = null) {
-            let modal = document.getElementById("Edit-Modal");
-            modal.showModal();
-            this.openBookModal = !this.openBookModal;
+            //let modal = document.getElementById("Edit-Modal");
+            //modal.showModal();
+            //this.openBookModal = !this.openBookModal;
+            this.dialog = true;
+            console.log("Book model is", this.openBookModal);
             if (index !== null) {
                 let current = this.books[index];
-                //console.log("The book I am editing is:", current);
                 this.modalBook.index = index;
                 this.modalBook.title = current.title;
                 this.modalBook.isbn = current.isbn;
@@ -262,6 +264,7 @@ Vue.createApp({
                 console.log("Successfully updated the book");
                 this.getBooks();
                 this.toggleBookModal();
+                this.dialog = false;
             } else {
                 console.log("Failed to update the book");
             }

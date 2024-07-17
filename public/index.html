@@ -107,25 +107,45 @@
                                 <div v-if="book.owner === currentUser._id">
                                     <p>{{ book.title }}</p>
                                     <p> {{ book.summary }} </p>
-                                    <button @click="toggleBookModal(index)">Edit</button>
+                                    <v-btn @click="toggleBookModal(index)"> 
+                                        Edit
+                                    </v-btn>
                                     <button @click="deleteBook(book)">Delete</button>
                                 </div>
                             </div>
+                        </div> 
+                        <div class="book-edit-field">     
+                            <v-dialog class="modal" id="Edit-Modal" v-model="dialog">
+                                <v-card prepend-icon="mdi-account" title="Book Information">
+                                    <v-card-text>
+                                        <v-row dense>
+                                        <v-col>
+                                            <v-text-field label="Book Title" 
+                                            v-model="modalBook.title"></v-text-field>
+                                        </v-col>
+                            
+                                        <v-col>
+                                            <v-text-field label="ISBN" 
+                                            v-model="modalBook.isbn"></v-text-field>
+                                        </v-col>
+                            
+                                        <v-col>
+                                            <v-text-field
+                                            hint="What did you think?"
+                                            label="Summary"
+                                            v-model="modalBook.summary"
+                                            ></v-text-field>
+                                        </v-col>
+                                        </v-row>
+                                        <v-btn text="Close" variant="plain" @click="dialog = false"></v-btn>
+                                        <v-btn
+                                        color="primary"
+                                        text="Save"
+                                        variant="tonal"
+                                        @click="editBook(book)"
+                                    ></v-btn>
+                            </v-dialog>                    
                         </div>
-                        
-                        <dialog class="modal" id="Edit-Modal" v-show="openBookModal">
-                            <p>Edit Book</p>
-                            <p @click="toggleBookModal()">X</p>
-                            <form @submit.prevent="editBook(book)">
-                                <p>Update Title</p>
-                                <input type="text" v-model="modalBook.title">
-                                <p>Update ISBN</p>
-                                <input type="number" v-model="modalBook.isbn">
-                                <p>Update Summary</p>
-                                <input type="text" v-model="modalBook.summary">
-                                <button>Update profile</button>
-                            </form>
-                        </dialog>
                     </div>
                 </div>
 
