@@ -337,7 +337,8 @@ app.put("/reviews/:reviewId", AuthMiddleware, async function (request, response)
 })
 app.get("/comments", async function (request, response) {
     try {
-        
+        let comments = await model.Comment.find()
+        response.send(comments)
     } catch (error) {
         console.log(error)
         return response.status(500).send("Server error.")
@@ -345,7 +346,12 @@ app.get("/comments", async function (request, response) {
 })
 app.get("/comments/:commentId", async function (request, response) {
     try {
-        
+        let comment = await model.Comment.findOne({_id: request.params.commentId})
+        if (!comment) {
+            console.log("Comment not found.")
+            return response.status(404).send("Comment not found.") 
+        }
+        response.json(comment)
     } catch (error) {
         console.log(error)
         return response.status(500).send("Server error.")
@@ -353,7 +359,18 @@ app.get("/comments/:commentId", async function (request, response) {
 })
 app.post("/comments", async function (request, response) {
     try {
-        
+        let newComment = new model.Comment({owner: request.session.userID, body: request.body.body, review: request.body.review})
+        let error = newComment.validateSync()
+        if (error) {
+            return response.status(422).json(error.errors)
+        }
+        await newComment.populate("owner", "username")
+        await newComment.populate("review", "title body book")
+        await newComment.save()
+        let commentedReview = await model.Review.findOne({_id: comment.review._id.toString()})
+        commentedReview.comments.push(comment._id)
+        await commentedReview.save()
+        response.status(201).send("Comment created.")
     } catch (error) {
         console.log(error)
         return response.status(500).send("Server error.")
@@ -361,7 +378,11 @@ app.post("/comments", async function (request, response) {
 })
 app.delete("/comments/:commentId", AuthMiddleware, async function (request, response) {
     try {
-        
+        let isDeleted = await model.Comment.findOneAndDelete({_id: request.params.commentId, owner: request.session.userID})
+        if (!isDeleted) {
+            return response.status(404).send("Comment not found.")
+        }
+        response.status(204).send("Removed comment.")
     } catch (error) {
         console.log(error)
         return response.status(500).send("Server error.")
@@ -369,7 +390,22 @@ app.delete("/comments/:commentId", AuthMiddleware, async function (request, resp
 })
 app.put("/comments/:commentId", AuthMiddleware, async function (request, response) {
     try {
-        
+        let comment = await model.Comment.findOne({_id: request.params.commentId})
+        if (!comment) {
+            console.log("Comment not found.")
+            return response.status(404).send("Comment not found.")
+        }
+        if (request.session.userID.toString() !== comment.owner._id.toString()) {
+            return response.status(404).send("Unauthenticated.")
+        }
+        comment.body = request.body.body
+        const error = await comment.validateSync()
+        if (error) {
+            console.log(error)
+            return response.status(422).send(error)
+        }
+        await comment.save()
+        response.status(204).send()
     } catch (error) {
         console.log(error)
         return response.status(500).send("Server error.")
