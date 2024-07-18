@@ -42,11 +42,18 @@ Vue.createApp({
                 title: "", 
                 book: null,
             },
+            modalReview: {
+                index: 0,
+                body: "",
+                title: "",
+                book: null,
+            },
             openModal: false,
             openBookModal: false,
             openDeleteModal: false,
             dialog: false,
             leaveReview: false,
+            editReview: false,
         };
     },
     methods: {
@@ -400,6 +407,64 @@ Vue.createApp({
                 this.leaveReview = false;
             } else {
                 console.log("Failed to create the review for the book");
+            }
+        },
+
+        //Delete a review
+        deleteReview: async function (index) {
+            let requestOptions = {
+                method: "DELETE",
+            };
+
+            let reviewID = this.reviews[index]._id;
+            let response = await fetch(`${URL}/reviews/${reviewID}`, requestOptions);
+            if(response.status == 204) {
+                this.reviews.splice(index, 1);
+                console.log("Review was successfully deleted.");
+            } else {
+                alert("Unable to find or delete review");
+            }
+        },
+
+        toggleEditReviewModal: function (index = null) {
+            this.editReview = true;
+            console.log("Review model is", this.editReview);
+            if (index !== null) {
+                let current = this.reviews[index];
+                this.modalReview.index = index;
+                console.log(current);
+                this.modalReview.title = current.title;
+                this.modalReview.body = current.body;
+                this.modalReview.book = current.book;
+            }
+        },
+
+        editTheReview: async function () {
+            let myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            let encodedData = "body="
+            + encodeURIComponent(this.modalReview.body) + "&title="
+            + encodeURIComponent(this.modalReview.title) + "&book="
+            + encodeURIComponent(this.modalReview.book);
+
+            let requestOptions = {
+                method: "PUT",
+                headers: myHeaders,
+                body: encodedData,
+            };
+
+            let reviewID = this.reviews[this.modalReview.index]._id;
+
+            let response = await fetch(`${URL}/reviews/${reviewID}`, requestOptions);
+
+            if (response.status === 204) {
+                console.log("Review successfully updated");
+                this.toggleEditReviewModal();
+                this.getReviews();
+                this.editReview = false;
+            } else {
+                console.log("Error while updating the user's info");
             }
         },
     },
