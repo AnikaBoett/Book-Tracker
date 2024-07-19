@@ -367,8 +367,8 @@ app.post("/comments", async function (request, response) {
         await newComment.populate("owner", "username")
         await newComment.populate("review", "title body book")
         await newComment.save()
-        let commentedReview = await model.Review.findOne({_id: comment.review._id.toString()})
-        commentedReview.comments.push(comment._id)
+        let commentedReview = await model.Review.findOne({_id: newComment.review._id.toString()})
+        commentedReview.comments.push(newComment._id)
         await commentedReview.save()
         response.status(201).send("Comment created.")
     } catch (error) {
@@ -378,6 +378,11 @@ app.post("/comments", async function (request, response) {
 })
 app.delete("/comments/:commentId", AuthMiddleware, async function (request, response) {
     try {
+        let comment = await model.Comment.findOne({_id: request.params.commentId})
+        let commentedReview = await model.Review.findOne({_id: comment.review})
+        let index = commentedReview.comments.indexOf(request.params.commentId)
+        commentedReview.comments.splice(index, 1)
+        await commentedReview.save()
         let isDeleted = await model.Comment.findOneAndDelete({_id: request.params.commentId, owner: request.session.userID})
         if (!isDeleted) {
             return response.status(404).send("Comment not found.")
