@@ -3,7 +3,7 @@ const URL = "http://localhost:8080";
 Vue.createApp({
     data() {
         return {
-            currentPage: "login",
+            currentPage: "loading",
             user: {
                 username: "",
                 email: "", 
@@ -134,7 +134,7 @@ Vue.createApp({
                 this.getProfile();
                 this.getReviews();
             } else {
-                this.currentPage = "login";
+                this.currentPage = "splash";
             }
         },
 
