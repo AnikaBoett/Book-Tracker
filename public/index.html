@@ -26,6 +26,7 @@
                                     height="55px"
                                     width="55px">
                             </a>
+                            <h1>BetterBook</h1>
                         </div>
                         <div class="rightHandNav">
                             <a @click="switchPage('signUp')">Sign Up</a>
@@ -94,6 +95,9 @@
                 </div>
             </div>
 
+            <!--  -->
+            <!-- HOMEPAGE CODE -->
+             <!--  -->
             <div id="homepage" v-if="currentPage === 'homepage' | currentPage === 'profile'">
                 <div id="homeTopbar">
                     <div class="searchbar">
@@ -106,7 +110,7 @@
                         <div @click="deleteSession()">Sign Out</div>
                     </nav>
                 </div>
-
+                
                 <div id="homefeed" v-if="currentPage === 'homepage'">
                     <div class="booklist">
                         <p>Add a book</p>
@@ -168,7 +172,18 @@
                                 {{review.body}}
                                 <button @click="toggleEditReviewModal(index)">Edit</button>
                                 <button @click="deleteReview(index)">Delete</button>
+                                <br>
+                                <input type="text" placeholder="Leave a Comment..." v-model="newComment.body">
+                                <button @click="createComment(review)">Post</button>
                             </div>
+                            Comments
+                            <div v-for="(comment, index) in comments"> 
+                                {{comment.body}}
+                                <button @click="launchEditComment(index)">Edit</button>
+                                <button @click="deleteComment(index)">Delete</button>
+                            </div>
+                            Cute edit spot
+                            <input type="text" placeholder="Edit comment..." v-model="modalComment.body"> <button @click="editComment()">Save</button>
                         </div>
 
                         <v-dialog class="modal" id="Edit-Modal" v-model="editReview">
