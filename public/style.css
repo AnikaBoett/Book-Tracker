@@ -16,7 +16,7 @@
 /* Splash Page CSS */
 #splashpage {
     background-color: #C2C5AA;
-    padding: 50px 50px 50px 50px;
+    padding: 50px;
     color: #333D29;
 }
 
@@ -43,6 +43,7 @@
     display: grid;
     grid-template-columns: repeat(16, 1fr);
     grid-template-rows: repeat(8, 12.5%);
+    height: 85vh;
 }
 
 .bigtext {
