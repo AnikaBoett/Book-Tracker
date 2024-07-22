@@ -467,6 +467,11 @@ Vue.createApp({
                 console.log("Error while updating the user's info");
             }
         },
+
+        getComments: async function () {
+            let response = await fetch(`${URL}/comments`);
+            let data = await response.json();
+        },
     },
     
     created: function() {
