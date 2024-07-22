@@ -37,6 +37,19 @@
     color: rgba(255, 255, 255, 0.7);
 }
 
+.logo {
+    display: flex; 
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo h1 {
+    font-size: 30px;
+    font-weight: normal;
+}
+
 /*Main Body*/
 
 #splashpageBody {
@@ -143,7 +156,9 @@
     color: rgba(255, 255, 255, 0.7);
 }
 
+/*  */
 /* Homepage CSS */
+/*  */
 #homepage {
     background-color: #CACAE4;
 }
@@ -180,10 +195,11 @@
     background-color:rgba(255, 255, 255, 0.7);
 }
 
+/* Main Homepage Body */
+
 #homefeed {
     display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
-    grid-template-rows: 1fr 5fr;
+    grid-template-columns: 2fr 1fr 1fr 4fr 4fr 1fr 1fr 2fr;
 }
 
 .mainfeed {
