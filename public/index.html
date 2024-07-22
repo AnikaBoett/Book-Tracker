@@ -17,8 +17,49 @@
             <v-app>
             <v-main>
 
-            <div id="spashpage" v-if="currentPage === 'splash'">
-                <h1>Join Millions of Users Today!</h1>
+            <div id="splashpage" v-if="currentPage === 'splash'">
+                <div id="splashNavBar">
+                    <nav>
+                        <div class="logo">
+                            <a href="">
+                                <img src="Images/book.svg" alt="BetterBook logo"
+                                    height="55px"
+                                    width="55px">
+                            </a>
+                        </div>
+                        <div class="rightHandNav">
+                            <a @click="switchPage('signUp')">Sign Up</a>
+                            <a @click="switchPage('login')">Log In</a>
+                        </div>
+                    </nav>
+                </div>
+                <div id="splashpageBody">
+                        <h1 class="bigtext">Find Your Next Favorite Book</h1>
+                        <div id="emailEntry">
+                            <h2>Email</h2>
+                            <input type="email">
+                            <button>-></button>
+                        </div>
+                        <div id="splashLinkNav">
+                            <a href="">
+                                <img src="Images/linkedin.svg" alt="LinkedIn Logo"
+                                height="45px"
+                                width="45px">
+                            </a>
+                            <a href="">
+                                <img src="Images/instagram.svg" alt="Instagram Logo"
+                                height="45px"
+                                width="45px">
+                            </a>
+                            <a href="">
+                                <img src="Images/facebook.svg" alt="Facebook Logo"
+                                height="45px"
+                                width="45px">
+                            </a>
+                        </div>
+                    <!-- <div class="bookHero"></div> -->
+                     <img class="bookImage" src="Images/bgImgBookSmall.png" alt="book">
+                </div>
             </div>
 
             <div id="login" v-if="currentPage === 'login'">
@@ -89,6 +130,8 @@
                                 <v-btn @click="toggleBookModal(index)"> Edit </v-btn>
                                 <v-btn @click="deleteBook(book)"> Delete </v-btn>
                                 <v-btn @click="beginReview(book)"> Leave a Review </v-btn>
+
+                               
                             </div>
                         </div>
                     </div>  
