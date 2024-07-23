@@ -189,7 +189,6 @@
                                 <button @click="toggleEditReviewModal(index)">Edit</button>
                                 <button @click="deleteReview(index)">Delete</button>
                                 <br>
-                                <input type="text" placeholder="Leave a Comment..." v-model="newComment.body">
                                 <br>
                                 <div v-for="(comment, index) in comments"> 
                                     <div v-if="comment.review === review._id">
@@ -198,9 +197,9 @@
                                         <button @click="deleteComment(index)">Delete</button>
                                     </div>
                                 </div>
+                                <input type="text" placeholder="Leave a Comment..." v-model="newComment.body">
                                 <button @click="createComment(review)">Post</button>
                             </div>
-                            <!-- v-if="book.owner === currentUser._id -->
                             Cute edit spot
                             <input type="text" placeholder="Edit comment..." v-model="modalComment.body"> <button @click="editComment()">Save</button>
                         </div>

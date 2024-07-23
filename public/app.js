@@ -571,6 +571,10 @@ Vue.createApp({
                 console.log("Error while editing comment");
             }
         },
+
+        switchInputFocus: function () {
+
+        },
     },
     
     created: function() {
