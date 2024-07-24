@@ -37,6 +37,19 @@
     color: rgba(255, 255, 255, 0.7);
 }
 
+.logo {
+    display: flex; 
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo h1 {
+    font-size: 30px;
+    font-weight: normal;
+}
+
 /*Main Body*/
 
 #splashpageBody {
@@ -143,9 +156,11 @@
     color: rgba(255, 255, 255, 0.7);
 }
 
+/*  */
 /* Homepage CSS */
+/*  */
 #homepage {
-    background-color: #CACAE4;
+    background-color: #C2C5AA;
 }
 
 #homeTopbar {
@@ -180,20 +195,52 @@
     background-color:rgba(255, 255, 255, 0.7);
 }
 
+/* Main Homepage Body */
+
 #homefeed {
     display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
-    grid-template-rows: 1fr 5fr;
+    grid-template-columns: 2fr 1fr 1fr 4fr 4fr 1fr 1fr 2fr;
+    background-color: #C2C5AA;
 }
 
-.mainfeed {
-    grid-template-rows: 1 / 2;
-    grid-column: 2 / 3;
+#homeCenter {
+    grid-column: 3 / 7;
 }
 
-.mainfeed #homehero {
-    grid-row: 1 / 2;
-    border-radius: 20px;
+#homehero {
+    border-radius: 30px;
+}
+
+/* Reviews Styling */
+
+.review-feed {
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 20px;
+    margin: 20px;
+    border-radius: 10px;
+}
+
+#review-section-label {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#review-section-label h2 {
+    font-weight: normal;
+}
+
+.reviewBody {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+.reviewTopBar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .booklist {

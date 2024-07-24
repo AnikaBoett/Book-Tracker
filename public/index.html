@@ -26,6 +26,7 @@
                                     height="55px"
                                     width="55px">
                             </a>
+                            <h1>BetterBook</h1>
                         </div>
                         <div class="rightHandNav">
                             <a @click="switchPage('signUp')">Sign Up</a>
@@ -94,10 +95,20 @@
                 </div>
             </div>
 
+            <!--  -->
+            <!-- HOMEPAGE CODE -->
+             <!--  -->
             <div id="homepage" v-if="currentPage === 'homepage' | currentPage === 'profile'">
                 <div id="homeTopbar">
+                    <div class="logo">
+                        <a href="">
+                            <img src="Images/book.svg" alt="BetterBook logo"
+                                height="55px"
+                                width="55px">
+                        </a>
+                        <h1>BetterBook</h1>
+                    </div>
                     <div class="searchbar">
-                        <p>Welcome, {{currentUser.username}} !</p>
                         <input type="text" placeholder="Search books...">
                     </div>
                     <nav>
@@ -106,8 +117,24 @@
                         <div @click="deleteSession()">Sign Out</div>
                     </nav>
                 </div>
-
+                
                 <div id="homefeed" v-if="currentPage === 'homepage'">
+                    
+                    <!-- Recently Read Books -->
+                    <div class="book-feed">
+                        <h2>Recently Read</h2>
+                        <div v-for="(book, index) in books">
+                            <div v-if="book.owner === currentUser._id">
+                                <p>{{ book.title }}</p>
+                                <p> {{ book.summary }} </p>
+                                <v-btn @click="toggleBookModal(index)"> Edit </v-btn>
+                                <v-btn @click="deleteBook(book)"> Delete </v-btn>
+                                <v-btn @click="beginReview(book)"> Leave a Review </v-btn>                               
+                            </div>
+                        </div>
+                    </div>  
+
+                    <!-- Add a New Book -->
                     <div class="booklist">
                         <p>Add a book</p>
                         <form @submit.prevent="addBooks()">
@@ -120,121 +147,127 @@
                             <button>Submit</button>
                         </form>
                     </div>
-
-                    <div class="book-feed">
-                        <p>Recently Read</p>
-                        <div v-for="(book, index) in books">
-                            <div v-if="book.owner === currentUser._id">
-                                <p>{{ book.title }}</p>
-                                <p> {{ book.summary }} </p>
-                                <v-btn @click="toggleBookModal(index)"> Edit </v-btn>
-                                <v-btn @click="deleteBook(book)"> Delete </v-btn>
-                                <v-btn @click="beginReview(book)"> Leave a Review </v-btn>
-
-                               
-                            </div>
-                        </div>
-                    </div>  
                     
-                    <div class="mainfeed">
+                    <div id="homeCenter">
+                    <!-- Image Carousel -->
                         <div id="homehero">
                             <v-carousel
                             show-arrows="hover"
                             cycle>
                                 <v-carousel-item
-                                  rounded
-                                  src="Images/beachread.jpg"
-                                  cover
+                                    rounded
+                                    src="Images/beachread.jpg"
+                                    cover
                                 ></v-carousel-item>
-                              
+                                
                                 <v-carousel-item
-                                  rounded
-                                  src="Images/bookrainbow.jpg"
-                                  cover
+                                    rounded
+                                    src="Images/bookrainbow.jpg"
+                                    cover
                                 ></v-carousel-item>
-                              
+                                
                                 <v-carousel-item
-                                  rounded
-                                  src="Images/habitbooks.jpg"
-                                  cover
+                                    rounded
+                                    src="Images/habitbooks.jpg"
+                                    cover
                                 ></v-carousel-item>
-                              </v-carousel>
+                                </v-carousel>
                         </div>
 
+                        <!-- Reviews Column -->
                         <div class="review-feed">
-                            Recent reviews
-                            <div v-for="(review, index) in reviews">
-                                {{review.title}}
-                                {{review.body}}
+                            <div id="review-section-label">
+                                <h2>Your Feed</h2>
+                                <p>Sort by...</p>
+                            </div>
+                            <div class="reviewBody" v-for="(review, index) in reviews">
+                                <div class="reviewTopBar">
+                                    <h3>{{review.title}}</h3>
+                                    <button> ^ </button>
+                                </div>
+                                <p>{{review.body}}</p>
                                 <button @click="toggleEditReviewModal(index)">Edit</button>
                                 <button @click="deleteReview(index)">Delete</button>
+                                <br>
+                                <br>
+                                <div v-for="(comment, index) in comments"> 
+                                    <div v-if="comment.review === review._id">
+                                        {{comment.body}}
+                                        <button @click="launchEditComment(index)">Edit</button>
+                                        <button @click="deleteComment(index)">Delete</button>
+                                    </div>
+                                </div>
+                                <input type="text" placeholder="Leave a Comment..." v-model="newComment.body">
+                                <button @click="createComment(review)">Post</button>
                             </div>
+                            Cute edit spot
+                            <input type="text" placeholder="Edit comment..." v-model="modalComment.body"> <button @click="editComment()">Save</button>
                         </div>
-
-                        <v-dialog class="modal" id="Edit-Modal" v-model="editReview">
-                            <v-card title="Edit Review">
-                                <v-card-text>
-                                    <v-col>
-                                        <v-text-field label="Title"
-                                        v-model="modalReview.title">
-                                        </v-text-field>
-                                        <v-text-field label="What did you think?"
-                                        v-model="modalReview.body">
-                                        </v-text-field>
-                                        <v-btn @click="editTheReview()">Save</v-btn>
-                                    </v-col>
-                                </v-card-text>
-                        </v-dialog>
-  
-                        <v-dialog class="modal" id="Edit-Modal" v-model="dialog">
-                            <v-card title="Book Information">
-                                <v-card-text>
-                                    <v-row dense>
-                                    <v-col>
-                                        <v-text-field label="Book Title" 
-                                        v-model="modalBook.title"></v-text-field>
-                                    </v-col>
-                        
-                                    <v-col>
-                                        <v-text-field label="ISBN" 
-                                        v-model="modalBook.isbn"
-                                        type="number"></v-text-field>
-                                    </v-col>
-                        
-                                    <v-col>
-                                        <v-text-field
-                                        hint="What did you think?"
-                                        label="Summary"
-                                        v-model="modalBook.summary"
-                                        ></v-text-field>
-                                    </v-col>
-                                    </v-row>
-                                    <v-btn text="Close" variant="plain" @click="dialog = false"></v-btn>
-                                    <v-btn
-                                    text="Save"
-                                    variant="tonal"
-                                    @click="editBook(book)"
-                                ></v-btn>
-                        </v-dialog>               
-                        <v-dialog class="modal" v-model="leaveReview">
-                            <v-card title="Leave a Review">
-                                <v-col>
-                                    <v-text-field
-                                    label="Review Title"
-                                    v-model="newReview.title">
-                                    </v-text-field>
-                                </v-col>
-                                <v-col>
-                                    <v-text-field
-                                    label="What did you think?"
-                                    v-model="newReview.body">
-                                    </v-text-field>
-                                </v-col>
-                                <v-btn text="Save" @click="createReview()"></v-btn>
-                                <v-btn text="Cancel" @click="leaveReview = false"></v-btn>
-                            </v-card>
-                        </v-dialog>  
                     </div>
+
+                    <v-dialog class="modal" id="Edit-Modal" v-model="editReview">
+                        <v-card title="Edit Review">
+                            <v-card-text>
+                                <v-col>
+                                    <v-text-field label="Title"
+                                    v-model="modalReview.title">
+                                    </v-text-field>
+                                    <v-text-field label="What did you think?"
+                                    v-model="modalReview.body">
+                                    </v-text-field>
+                                    <v-btn @click="editTheReview()">Save</v-btn>
+                                </v-col>
+                            </v-card-text>
+                    </v-dialog>
+
+                    <v-dialog class="modal" id="Edit-Modal" v-model="dialog">
+                        <v-card title="Book Information">
+                            <v-card-text>
+                                <v-row dense>
+                                <v-col>
+                                    <v-text-field label="Book Title" 
+                                    v-model="modalBook.title"></v-text-field>
+                                </v-col>
+                    
+                                <v-col>
+                                    <v-text-field label="ISBN" 
+                                    v-model="modalBook.isbn"
+                                    type="number"></v-text-field>
+                                </v-col>
+                    
+                                <v-col>
+                                    <v-text-field
+                                    hint="What did you think?"
+                                    label="Summary"
+                                    v-model="modalBook.summary"
+                                    ></v-text-field>
+                                </v-col>
+                                </v-row>
+                                <v-btn text="Close" variant="plain" @click="dialog = false"></v-btn>
+                                <v-btn
+                                text="Save"
+                                variant="tonal"
+                                @click="editBook(book)"
+                            ></v-btn>
+                    </v-dialog>               
+                    <v-dialog class="modal" v-model="leaveReview">
+                        <v-card title="Leave a Review">
+                            <v-col>
+                                <v-text-field
+                                label="Review Title"
+                                v-model="newReview.title">
+                                </v-text-field>
+                            </v-col>
+                            <v-col>
+                                <v-text-field
+                                label="What did you think?"
+                                v-model="newReview.body">
+                                </v-text-field>
+                            </v-col>
+                            <v-btn text="Save" @click="createReview()"></v-btn>
+                            <v-btn text="Cancel" @click="leaveReview = false"></v-btn>
+                        </v-card>
+                    </v-dialog>  
                 </div>
 
                 <!---->

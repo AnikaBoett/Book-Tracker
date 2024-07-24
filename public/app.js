@@ -48,6 +48,16 @@ Vue.createApp({
                 title: "",
                 book: null,
             },
+            comments: [],
+            newComment: {
+                body: "",
+                review: null,
+            },
+            modalComment: {
+                index: 0,
+                body: "",
+                review: null,
+            },
             openModal: false,
             openBookModal: false,
             openDeleteModal: false,
@@ -133,6 +143,7 @@ Vue.createApp({
                 this.getBooks();
                 this.getProfile();
                 this.getReviews();
+                this.getComments();
             } else {
                 this.currentPage = "splash";
             }
@@ -442,7 +453,6 @@ Vue.createApp({
         editTheReview: async function () {
             let myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
             let encodedData = "body="
             + encodeURIComponent(this.modalReview.body) + "&title="
             + encodeURIComponent(this.modalReview.title) + "&book="
@@ -466,6 +476,104 @@ Vue.createApp({
             } else {
                 console.log("Error while updating the user's info");
             }
+        },
+
+        getComments: async function () {
+            let response = await fetch(`${URL}/comments`);
+            let data = await response.json();
+            this.comments = data;
+            console.log(data);
+            console.log("Successfully retrieved comments");
+        },
+
+        createComment: async function (review) {
+            let myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            console.log(review._id);
+            this.newComment.review = review._id;
+            let encodedData = 
+            "body="
+            + encodeURIComponent(this.newComment.body) + "&review="
+            + encodeURIComponent(this.newComment.review);
+
+            let requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: encodedData,
+            };
+
+            let response = await fetch(`${URL}/comments`, requestOptions);
+            console.log("The comments are", response);
+            if (response.status === 201) {
+                console.log("New comment created");
+                this.getComments();
+                this.newComment = {
+                    body: "",
+                    review: null,
+                };
+            } else {
+                console.log("Failed to create a comment");
+            }
+        },
+
+        deleteComment: async function (index) {
+            let requestOptions = {
+                method: "DELETE",
+            };
+
+            let commentID = this.comments[index]._id;
+            let response = await fetch(`${URL}/comments/${commentID}`, requestOptions);
+            if(response.status == 204) {
+                this.comments.splice(index, 1);
+                console.log("Successfully deleted comment");
+            } else {
+                alert("Unable to find or delete review");
+            }
+        },
+
+        launchEditComment: function (index = null) {
+            if (index !== null) {
+                let current = this.comments[index];
+                this.modalComment.index = index;
+                console.log(current);
+                this.modalComment.body = current.body;
+                this.modalReview.review = current.review;
+            }            
+        },
+
+        editComment: async function () {
+            let myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+            let encodedData = 
+            "body="
+            + encodeURIComponent(this.modalComment.body) + "&review="
+            + encodeURIComponent(this.modalComment.review);
+
+            let requestOptions = {
+                method: "PUT",
+                headers: myHeaders,
+                body: encodedData,
+            };
+
+            let commentID = this.comments[this.modalComment.index]._id;
+            let response = await fetch(`${URL}/comments/${commentID}`, requestOptions);
+
+            if(response.status === 204) {
+                console.log("Comment successfully updated");
+                this.getComments();
+                this.modalComment = {
+                    index: 0,
+                    body: "",
+                    review: null,
+                }
+            } else {
+                console.log("Error while editing comment");
+            }
+        },
+
+        switchInputFocus: function () {
+
         },
     },
     
