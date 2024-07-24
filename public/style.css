@@ -167,15 +167,21 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    padding-left: 50px;
+}
+
+#homeTopbar .logo {
+    padding-top: 10px;
 }
 
 #homeTopbar nav {
     display: flex;
     flex-direction: row;
-    gap: 10px;
-    background-color: #9181B3;
-    color: #1D0338;
-    padding: 5px 10px 5px 10px;
+    gap: 30px;
+    background-color: #A4AC86;
+    color: #333D29;
+    font-size: 18px;
+    padding: 10px 20px 10px 20px;
     border-radius: 0px 0px 0px 5px;
     margin-bottom: 20px;
 }
@@ -184,15 +190,11 @@
     color: white;
 }
 
-.searchbar {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 50px;
-}
-
-.searchbar input {
-    background-color:rgba(255, 255, 255, 0.7);
+.logo input {
+    width: 700px;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 5px 10px 5px 10px;
+    border-radius: 5px;
 }
 
 /* Main Homepage Body */
@@ -201,6 +203,7 @@
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 4fr 4fr 1fr 1fr 2fr;
     background-color: #C2C5AA;
+    padding: 50px;
 }
 
 #homeCenter {
@@ -251,9 +254,13 @@
     grid-column: 1 / 2;
 }
 
+#leaveCommentText {
+    color: grey;
+}
+
 /*Profile Styling*/
 #profile {
-    background-color: #5E3932;
+    background-color: #C2C5AA;
     height: 100vh;
     padding: 100px;
     display: grid;
@@ -267,9 +274,10 @@
     grid-row: 1 / 2;
     display: flex;
     flex-direction: column;
-    background-color: #DFBB7D;
+    background-color: #A4AC86;
     border-radius: 10px;
     padding: 20px;
+    color: #333D29;
 }
 
 .profileDisplay {
@@ -278,7 +286,8 @@
 }
 
 #profileCreator button {
-    background-color: #9181B3;
+    background-color: #414833;
+    color: rgba(255, 255, 255, 0.7);
     padding: 3px;
     border-radius: 5px;
 }

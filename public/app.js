@@ -64,6 +64,7 @@ Vue.createApp({
             dialog: false,
             leaveReview: false,
             editReview: false,
+            commentFocus: false,
         };
     },
     methods: {
@@ -386,6 +387,11 @@ Vue.createApp({
             this.reviews = data;
             console.log(data);
             console.log("Successfully retreived reviews");
+            for (let review of this.reviews) {
+                review.newComment = "";
+
+            }
+            console.log(this.reviews);
         },
 
         beginReview: function (book) {
@@ -494,7 +500,7 @@ Vue.createApp({
             this.newComment.review = review._id;
             let encodedData = 
             "body="
-            + encodeURIComponent(this.newComment.body) + "&review="
+            + encodeURIComponent(review.newComment) + "&review="
             + encodeURIComponent(this.newComment.review);
 
             let requestOptions = {
@@ -512,6 +518,7 @@ Vue.createApp({
                     body: "",
                     review: null,
                 };
+                review.newComment = "";
             } else {
                 console.log("Failed to create a comment");
             }
@@ -570,10 +577,6 @@ Vue.createApp({
             } else {
                 console.log("Error while editing comment");
             }
-        },
-
-        switchInputFocus: function () {
-
         },
     },
     
