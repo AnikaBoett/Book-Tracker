@@ -150,7 +150,12 @@ Vue.createApp({
                 this.getReviews();
                 this.getComments();
             } else {
-                this.currentPage = "splash";
+                if (window.innerWidth > 970) {
+                    this.currentPage = "splash";
+                }
+                else {
+                    this.currentPage = "login";
+                }
             }
         },
 
