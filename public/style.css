@@ -270,10 +270,11 @@
     background-color: #C2C5AA;
     height: 100vh;
     padding: 100px;
-    display: grid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     gap: 20px;
-    grid-template-columns: 50% 50%;
-    grid-template-rows: 90% 10%;
 }
 
 #profileCreator {
@@ -281,10 +282,31 @@
     grid-row: 1 / 2;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     background-color: #A4AC86;
     border-radius: 10px;
-    padding: 20px;
+    padding: 50px;
     color: #333D29;
+    height: auto;
+    width: 600px;
+}
+
+#profileCreator p {
+    font-size: 20px;
+}
+
+#profileButtons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#profileCreator h1 {
+    padding-bottom: 10px;
 }
 
 .profileDisplay {
@@ -295,13 +317,19 @@
 #profileCreator button {
     background-color: #414833;
     color: rgba(255, 255, 255, 0.7);
-    padding: 3px;
+    padding: 5px 10px 5px 10px;
     border-radius: 5px;
 }
 
 #profileCreator button:hover {
     color: white;
     transform: scale(1.1);
+}
+
+.profileDisplay {
+    display: flex; 
+    flex-direction: column;
+    gap: 20px;
 }
 
 .modal {
