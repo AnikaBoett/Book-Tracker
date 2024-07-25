@@ -119,9 +119,9 @@
     align-items: center;
     justify-content: center;
     font-size: 15px;
-    background-color: #CACAE4;
+    background-color: #C2C5AA;
     border-radius: 10px;
-    color: #1D0338;
+    color: #333D29;
     height: 100vh;
 }
 
@@ -131,7 +131,7 @@
 }
 
 #login button{
-    background-color:#9181B3;
+    background-color:#656D4A;
     border-radius:5px;
     padding-left: 5px;
     padding-right: 5px;
@@ -212,6 +212,13 @@
 
 #homehero {
     border-radius: 30px;
+}
+
+#commentField {
+    display: flex;
+    flex-direction: row;
+    margin-left: 30px;
+    gap: 5px;
 }
 
 /* Reviews Styling */
