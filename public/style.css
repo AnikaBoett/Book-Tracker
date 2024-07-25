@@ -416,6 +416,12 @@ dialog form div input {
     font-size: 20px;
 }
 
+.profileFlex {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
 @media screen and (max-width:900px) {
     #homehero {
         display: none;

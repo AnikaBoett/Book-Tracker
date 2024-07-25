@@ -201,7 +201,7 @@
                         <div class="review-feed">
                             <div id="review-section-label">
                                 <h2>Your Feed</h2>
-                                <p>Sort by...</p>
+                                <!-- <p>Sort by...</p> -->
                             </div>
                             <div class="reviewBody" v-for="(review, index) in reviews">
                                 <div class="reviewTopBar">
@@ -253,7 +253,7 @@
                                 <input type="text" placeholder="Leave a Comment..." v-model="review.newComment">
                                 <button @click="createComment(review)">Post</button>
                             </div>
-                            Cute edit spot
+                            Edit Comment
                             <input type="text" placeholder="Edit comment..." v-model="modalComment.body"> <button @click="editComment()">Save</button>
                         </div>
                     </div>
@@ -327,35 +327,48 @@
                 <!-- PROFILE PAGE ITEMS-->
                 <!---->
                 <div id="profile" v-if="currentPage === 'profile'">
-                    <div id="profileCreator" v-if="displayProfile === true">
-                        <div v-for="(profile, index) in profiles">
-                            <div class='profileDisplay' v-if="profile.owner === currentUser._id">
-                                <h1>Your Profile</h1>
-                                <p>Bio: {{ profile.bio }}</p>
-                                <p>Location: {{ profile.location }}</p>
-                                <p>Display Name: {{ profile.displayName }}</p>
-                                <p>Interests: {{ profile.interests }}</p>
-                                <div id="profileButtons">
-                                    <button @click="toggleModal(index)">Edit</button>
-                                    <button @click="deleteProfile(index)">Delete</button>
+
+                    <div class="profileFlex">
+                        <div>
+                            <div id="profileCreator" v-if="displayProfile === true">
+                                <div v-for="(profile, index) in profiles">
+                                    <div class='profileDisplay' v-if="profile.owner === currentUser._id">
+                                        <h1>Your Profile</h1>
+                                        <p>Bio: {{ profile.bio }}</p>
+                                        <p>Location: {{ profile.location }}</p>
+                                        <p>Display Name: {{ profile.displayName }}</p>
+                                        <p>Interests: {{ profile.interests }}</p>
+                                        <div id="profileButtons">
+                                            <button @click="toggleModal(index)">Edit</button>
+                                            <button @click="deleteProfile(index)">Delete</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="profileCreator" v-if="displayProfile === false">
+                                <h1>Create Your Profile</h1>
+                                <form @submit.prevent="createProfile()">
+                                    <p>Create Bio</p>
+                                    <input type="text" v-model="newProfile.bio">
+                                    <p>Create Location</p>
+                                    <input type="text" v-model="newProfile.location">
+                                    <p>Create Display Name</p>
+                                    <input type="text" v-model="newProfile.displayName">
+                                    <p>Add Interests</p>
+                                    <input type="text" v-model="newProfile.interests"> <br>
+                                    <button>Create profile</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div id="profileFriends">
+                            <h2>Your Friends</h2>
+                            <div v-for="(profile, index) in profiles">
+                                <div class="profileList" v-if="profile.owner !== currentUser._id">
+                                    {{profile.displayName}}
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div id="profileCreator" v-if="displayProfile === false">
-                        <h1>Create Your Profile</h1>
-                        <form @submit.prevent="createProfile()">
-                            <p>Create Bio</p>
-                            <input type="text" v-model="newProfile.bio">
-                            <p>Create Location</p>
-                            <input type="text" v-model="newProfile.location">
-                            <p>Create Display Name</p>
-                            <input type="text" v-model="newProfile.displayName">
-                            <p>Add Interests</p>
-                            <input type="text" v-model="newProfile.interests"> <br>
-                            <button>Create profile</button>
-                        </form>
                     </div>
 
                     <div class="modal" v-show="openModal">
