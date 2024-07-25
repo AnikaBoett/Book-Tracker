@@ -119,52 +119,56 @@
                 
                 <div id="homefeed" v-if="currentPage === 'homepage'">
                     
-                    <!-- Recently Read Books -->
-                    <div class="book-feed">
-                        <h2>Recently Read</h2>
-                        <div v-for="(book, index) in books">
-                            <div v-if="book.owner === currentUser._id">
-                                <v-menu transition="scale-transition">
-                                    <template v-slot:activator="{ props: booksList }">
-                                        <div v-bind="booksList"> ^ </div>
-                                    </template>
+                    <div id="sidebar">
+                        <!-- Recently Read Books -->
+                        <div class="book-feed">
+                            <h2>Recently Read</h2>
+                            <div v-for="(book, index) in books">
+                                <div v-if="book.owner === currentUser._id">
+                                    <div class="titleFlex">
+                                        <p>{{ book.title }}</p>
+                                        <v-menu transition="scale-transition">
+                                            <template v-slot:activator="{ props: booksList }">
+                                                <div v-bind="booksList"> ^ </div>
+                                            </template>
 
-                                    <v-list>
-                                        <v-list-item>
-                                            <vs-list-item-title @click="toggleBookModal(index)">
-                                                Edit Book
-                                            </v-list-item-title>
-                                        </v-list-item>
-                                        <v-list-item>
-                                            <v-list-item-title @click="deleteBook(book)">
-                                                Delete Book
-                                            </v-list-item-title>
-                                        </v-list-item>
-                                        <v-list-item>
-                                            <v-list-item-title @click="beginReview(book)">
-                                                Create a Review
-                                            </v-list-item-title>
-                                        </v-list-item>
-                                    </v-list>
-                                </v-menu>
-                                <p>{{ book.title }}</p>
-                                <p> {{ book.summary }} </p>                            
+                                            <v-list>
+                                                <v-list-item>
+                                                    <vs-list-item-title @click="toggleBookModal(index)">
+                                                        Edit Book
+                                                    </v-list-item-title>
+                                                </v-list-item>
+                                                <v-list-item>
+                                                    <v-list-item-title @click="deleteBook(book)">
+                                                        Delete Book
+                                                    </v-list-item-title>
+                                                </v-list-item>
+                                                <v-list-item>
+                                                    <v-list-item-title @click="beginReview(book)">
+                                                        Create a Review
+                                                    </v-list-item-title>
+                                                </v-list-item>
+                                            </v-list>
+                                        </v-menu>  
+                                    </div>
+                                    <p> {{ book.summary }} </p>                          
+                                </div>
                             </div>
-                        </div>
-                    </div>  
+                        </div>  
 
-                    <!-- Add a New Book -->
-                    <div class="booklist">
-                        <p>Add a book</p>
-                        <form @submit.prevent="addBooks()">
-                            <p>Title</p>
-                            <input type="text" v-model="newBook.title">
-                            <p>ISBN</p>
-                            <input type="number" v-model="newBook.isbn">
-                            <p>Summary</p>
-                            <input type="text" v-model="newBook.summary">
-                            <button>Submit</button>
-                        </form>
+                        <!-- Add a New Book -->
+                        <div class="booklist">
+                            <h1>Add a book</h1>
+                            <form @submit.prevent="addBooks()">
+                                <p>Title</p>
+                                <input type="text" v-model="newBook.title">
+                                <p>ISBN</p>
+                                <input type="number" v-model="newBook.isbn">
+                                <p>Summary</p>
+                                <input type="text" v-model="newBook.summary">
+                                <button>Submit</button>
+                            </form>
+                        </div>
                     </div>
                     
                     <div id="homeCenter">

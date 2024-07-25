@@ -197,17 +197,25 @@
     border-radius: 5px;
 }
 
+.titleFlex {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
 /* Main Homepage Body */
 
 #homefeed {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 4fr 4fr 1fr 1fr 2fr;
+    grid-template-rows: 100%;
     background-color: #C2C5AA;
     padding: 50px;
 }
 
 #homeCenter {
     grid-column: 3 / 7;
+    grid-row: 1 / 2;
 }
 
 #homehero {
@@ -253,12 +261,9 @@
     justify-content: space-between;
 }
 
-.booklist {
+#sidebar {
     grid-column: 1 / 2;
-}
-
-.book-feed {
-    grid-column: 1 / 2;
+    grid-row: 1 / 2;
 }
 
 #leaveCommentText {
@@ -284,8 +289,6 @@
 }
 
 #profileCreator {
-    grid-column: 1 / 2;
-    grid-row: 1 / 2;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -391,4 +394,71 @@ dialog form div input {
     background-color: white;
     padding: 5px;
     float: left;
+}
+
+.booklist {
+    background-color: #A4AC86;
+    padding: 10px;
+    border-radius: 10px;
+    height: 250px;
+    margin-top: 50px;
+}
+
+.booklist input {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.booklist h1 {
+    font-weight: normal;
+    font-size: 20px;
+}
+
+@media screen and (max-width:900px) {
+    #homehero {
+        display: none;
+    }
+
+    #homeTopbar {
+        flex-direction: column;
+    }
+
+    #homeTopbar input {
+        width: auto;
+    }
+
+    #homeTopbar nav {
+        justify-content: center;
+        margin-right: 50px;
+        border-bottom-right-radius: 5px;
+    }
+
+    #homefeed {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .booklist {
+        height: auto;
+    }
+
+    #profileCreator {
+        width: auto;
+        height: auto;
+        padding: 70px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    #profileCreator h1 {
+        font-size: 25px;
+    }
+
+    #profileCreator p {
+        font-size: 18px;
+    }
 }
