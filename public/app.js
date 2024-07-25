@@ -65,11 +65,13 @@ Vue.createApp({
             leaveReview: false,
             editReview: false,
             commentFocus: false,
+            displayProfile: false,
         };
     },
     methods: {
         switchPage: function (page) {
             this.currentPage = page;
+            console.log("displayprofile is", this.displayProfile);
         },
 
         toggleDeleteModal: function () {
@@ -143,6 +145,8 @@ Vue.createApp({
                 this.currentPage = "homepage"
                 this.getBooks();
                 this.getProfile();
+                this.checkForProfile();
+                console.log(this.displayProfile, "Profile status");
                 this.getReviews();
                 this.getComments();
             } else {
@@ -299,6 +303,7 @@ Vue.createApp({
             let response = await fetch(`${URL}/profiles`);
             let data = await response.json();
             this.profiles = data;
+            this.checkForProfile();
             console.log(data);
             console.log("Successfully retrieved profile");
         },
@@ -323,6 +328,12 @@ Vue.createApp({
             let response = await fetch(`${URL}/profiles`, requestOptions);
             if (response.status === 201) {
                 console.log("User profile successfully created");
+                this.newProfile = {
+                    displayName: "",
+                    bio: "",
+                    location: "",
+                    interests: "",
+                };
                 this.getProfile();
             } else {
                 console.log("Failed to create user profile");
@@ -362,6 +373,29 @@ Vue.createApp({
             }
         },
 
+        checkForProfile: function () {
+            let profileNum = 0;
+            this.displayProfile = false;
+            console.log("running check for profile");
+            for (p in this.profiles) {
+                console.log(this.profiles[p].owner, this.currentUser._id);
+                if (this.profiles[p].owner === this.currentUser._id) {
+                    profileNum = 1;
+
+                    console.log("TESTING")
+                    console.log("User profile exists");
+                }
+            }
+            console.log(profileNum);
+            if (profileNum === 0) {
+                this.displayProfile = false;
+                console.log("no user profiles exist")
+            } else {
+                console.log("set display profile to true", this.displayProfile);
+                this.displayProfile = true;
+            }
+        },
+
         //DELETE for profile 
         deleteProfile: async function (index) {
             let requestOptions = {
@@ -373,6 +407,7 @@ Vue.createApp({
             if(response.status == 204) {
                 this.profiles.splice(index, 1);
                 console.log("Profile successfully deleted");
+                this.checkForProfile();
             } else {
                 alert("Unable to find or delete profile");
             }

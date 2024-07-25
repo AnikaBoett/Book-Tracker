@@ -224,25 +224,10 @@
                                 <p>{{review.body}}</p>
                                 <br>
                                 <div v-for="(comment, index) in comments"> 
-                                    <div id='commentField' v-if="comment.review === review._id">
-                                        <v-menu transition="scale-transition">
-                                            <template v-slot:activator="{ props: commentMenu }">
-                                                <div v-bind="commentMenu"> ^ </div>
-                                            </template>
-                                            <v-list>
-                                                <v-list-item>
-                                                    <vs-list-item-title @click="launchEditComment(index)">
-                                                        Edit Comment
-                                                    </v-list-item-title>
-                                                </v-list-item>
-                                                <v-list-item>
-                                                    <v-list-item-title @click="deleteComment(index)">
-                                                        Delete Comment
-                                                    </v-list-item-title>
-                                                </v-list-item>
-                                            </v-list>
-                                        </v-menu>
+                                    <div v-if="comment.review === review._id">
                                         {{comment.body}}
+                                        <button @click="launchEditComment(index)">Edit</button>
+                                        <button @click="deleteComment(index)">Delete</button>
                                     </div>
                                 </div>
                                 <input type="text" placeholder="Leave a Comment..." v-model="review.newComment">
@@ -322,20 +307,23 @@
                 <!-- PROFILE PAGE ITEMS-->
                 <!---->
                 <div id="profile" v-if="currentPage === 'profile'">
-                    <div class="profileDisplay">
+                    <div id="profileCreator" v-if="displayProfile === true">
                         <div v-for="(profile, index) in profiles">
-                            <div v-if="profile.owner === currentUser._id">
-                                <p>{{ profile.bio }}</p>
-                                <p>{{ profile.location }}</p>
-                                <p>{{ profile.displayName }}</p>
-                                <p>{{ profile.interests }}</p>
-                                <button @click="toggleModal(index)">Edit</button>
-                                <button @click="deleteProfile(index)">Delete</button>
+                            <div class='profileDisplay' v-if="profile.owner === currentUser._id">
+                                <h1>Your Profile</h1>
+                                <p>Bio: {{ profile.bio }}</p>
+                                <p>Location: {{ profile.location }}</p>
+                                <p>Display Name: {{ profile.displayName }}</p>
+                                <p>Interests: {{ profile.interests }}</p>
+                                <div id="profileButtons">
+                                    <button @click="toggleModal(index)">Edit</button>
+                                    <button @click="deleteProfile(index)">Delete</button>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div id="profileCreator">
+                    <div id="profileCreator" v-if="displayProfile === false">
                         <h1>Create Your Profile</h1>
                         <form @submit.prevent="createProfile()">
                             <p>Create Bio</p>
@@ -365,6 +353,7 @@
                             <button>Update profile</button>
                         </form>
                     </div>
+
                     <button @click="toggleDeleteModal()">Delete Your Account</button>
 
                     <div class="modal" id="Edit-Modal" v-show="openDeleteModal">
