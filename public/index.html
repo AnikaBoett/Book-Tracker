@@ -107,9 +107,8 @@
                                 width="55px">
                         </a>
                         <h1>BetterBook</h1>
-                    </div>
-                    <div class="searchbar">
-                        <input type="text" placeholder="Search books...">
+                        <input type="text" placeholder="Search books..."
+                        v-if="currentPage === 'homepage'">
                     </div>
                     <nav>
                         <div @click="switchPage('homepage')">Home</div>
@@ -125,11 +124,31 @@
                         <h2>Recently Read</h2>
                         <div v-for="(book, index) in books">
                             <div v-if="book.owner === currentUser._id">
+                                <v-menu transition="scale-transition">
+                                    <template v-slot:activator="{ props: booksList }">
+                                        <div v-bind="booksList"> ^ </div>
+                                    </template>
+
+                                    <v-list>
+                                        <v-list-item>
+                                            <vs-list-item-title @click="toggleBookModal(index)">
+                                                Edit Book
+                                            </v-list-item-title>
+                                        </v-list-item>
+                                        <v-list-item>
+                                            <v-list-item-title @click="deleteBook(book)">
+                                                Delete Book
+                                            </v-list-item-title>
+                                        </v-list-item>
+                                        <v-list-item>
+                                            <v-list-item-title @click="beginReview(book)">
+                                                Create a Review
+                                            </v-list-item-title>
+                                        </v-list-item>
+                                    </v-list>
+                                </v-menu>
                                 <p>{{ book.title }}</p>
-                                <p> {{ book.summary }} </p>
-                                <v-btn @click="toggleBookModal(index)"> Edit </v-btn>
-                                <v-btn @click="deleteBook(book)"> Delete </v-btn>
-                                <v-btn @click="beginReview(book)"> Leave a Review </v-btn>                               
+                                <p> {{ book.summary }} </p>                            
                             </div>
                         </div>
                     </div>  
@@ -183,21 +202,51 @@
                             <div class="reviewBody" v-for="(review, index) in reviews">
                                 <div class="reviewTopBar">
                                     <h3>{{review.title}}</h3>
-                                    <button> ^ </button>
+                                    <v-menu transition="scale-transition">
+                                        <template v-slot:activator="{ props: items }">
+                                            <div v-bind="items"> ^ </div>
+                                        </template>
+
+                                        <v-list>
+                                            <v-list-item>
+                                                <vs-list-item-title @click="toggleEditReviewModal(index)">
+                                                    Edit Review
+                                                </v-list-item-title>
+                                            </v-list-item>
+                                            <v-list-item>
+                                                <v-list-item-title @click="deleteReview(index)">
+                                                    Delete Review
+                                                </v-list-item-title>
+                                            </v-list-item>
+                                        </v-list>
+                                    </v-menu>
                                 </div>
                                 <p>{{review.body}}</p>
-                                <button @click="toggleEditReviewModal(index)">Edit</button>
-                                <button @click="deleteReview(index)">Delete</button>
-                                <br>
                                 <br>
                                 <div v-for="(comment, index) in comments"> 
-                                    <div v-if="comment.review === review._id">
-                                        {{comment.body}}
-                                        <button @click="launchEditComment(index)">Edit</button>
-                                        <button @click="deleteComment(index)">Delete</button>
+                                    <div id='commentFlex' v-if="comment.review === review._id">
+                                        <v-menu transition="scale-transition">
+                                            <template v-slot:activator="{ props: commentBox }">
+                                                <div v-bind="commentBox"> ^ </div>
+                                            </template>
+    
+                                            <v-list>
+                                                <v-list-item>
+                                                    <vs-list-item-title @click="launchEditComment(index)">
+                                                        Edit Comment
+                                                    </v-list-item-title>
+                                                </v-list-item>
+                                                <v-list-item>
+                                                    <v-list-item-title @click="deleteComment(index)">
+                                                        Delete Comment
+                                                    </v-list-item-title>
+                                                </v-list-item>
+                                            </v-list>
+                                        </v-menu>
+                                        {{ comment.body}}
                                     </div>
                                 </div>
-                                <input type="text" placeholder="Leave a Comment..." v-model="newComment.body">
+                                <input type="text" placeholder="Leave a Comment..." v-model="review.newComment">
                                 <button @click="createComment(review)">Post</button>
                             </div>
                             Cute edit spot
@@ -274,20 +323,23 @@
                 <!-- PROFILE PAGE ITEMS-->
                 <!---->
                 <div id="profile" v-if="currentPage === 'profile'">
-                    <div class="profileDisplay">
+                    <div id="profileCreator" v-if="displayProfile === true">
                         <div v-for="(profile, index) in profiles">
-                            <div v-if="profile.owner === currentUser._id">
-                                <p>{{ profile.bio }}</p>
-                                <p>{{ profile.location }}</p>
-                                <p>{{ profile.displayName }}</p>
-                                <p>{{ profile.interests }}</p>
-                                <button @click="toggleModal(index)">Edit</button>
-                                <button @click="deleteProfile(index)">Delete</button>
+                            <div class='profileDisplay' v-if="profile.owner === currentUser._id">
+                                <h1>Your Profile</h1>
+                                <p>Bio: {{ profile.bio }}</p>
+                                <p>Location: {{ profile.location }}</p>
+                                <p>Display Name: {{ profile.displayName }}</p>
+                                <p>Interests: {{ profile.interests }}</p>
+                                <div id="profileButtons">
+                                    <button @click="toggleModal(index)">Edit</button>
+                                    <button @click="deleteProfile(index)">Delete</button>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div id="profileCreator">
+                    <div id="profileCreator" v-if="displayProfile === false">
                         <h1>Create Your Profile</h1>
                         <form @submit.prevent="createProfile()">
                             <p>Create Bio</p>
@@ -317,6 +369,7 @@
                             <button>Update profile</button>
                         </form>
                     </div>
+
                     <button @click="toggleDeleteModal()">Delete Your Account</button>
 
                     <div class="modal" id="Edit-Modal" v-show="openDeleteModal">

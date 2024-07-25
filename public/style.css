@@ -119,9 +119,9 @@
     align-items: center;
     justify-content: center;
     font-size: 15px;
-    background-color: #CACAE4;
+    background-color: #C2C5AA;
     border-radius: 10px;
-    color: #1D0338;
+    color: #333D29;
     height: 100vh;
 }
 
@@ -131,7 +131,7 @@
 }
 
 #login button{
-    background-color:#9181B3;
+    background-color:#656D4A;
     border-radius:5px;
     padding-left: 5px;
     padding-right: 5px;
@@ -167,15 +167,21 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    padding-left: 50px;
+}
+
+#homeTopbar .logo {
+    padding-top: 10px;
 }
 
 #homeTopbar nav {
     display: flex;
     flex-direction: row;
-    gap: 10px;
-    background-color: #9181B3;
-    color: #1D0338;
-    padding: 5px 10px 5px 10px;
+    gap: 30px;
+    background-color: #A4AC86;
+    color: #333D29;
+    font-size: 18px;
+    padding: 10px 20px 10px 20px;
     border-radius: 0px 0px 0px 5px;
     margin-bottom: 20px;
 }
@@ -184,15 +190,11 @@
     color: white;
 }
 
-.searchbar {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 50px;
-}
-
-.searchbar input {
-    background-color:rgba(255, 255, 255, 0.7);
+.logo input {
+    width: 700px;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 5px 10px 5px 10px;
+    border-radius: 5px;
 }
 
 /* Main Homepage Body */
@@ -201,6 +203,7 @@
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 4fr 4fr 1fr 1fr 2fr;
     background-color: #C2C5AA;
+    padding: 50px;
 }
 
 #homeCenter {
@@ -209,6 +212,13 @@
 
 #homehero {
     border-radius: 30px;
+}
+
+#commentField {
+    display: flex;
+    flex-direction: row;
+    margin-left: 30px;
+    gap: 5px;
 }
 
 /* Reviews Styling */
@@ -251,15 +261,26 @@
     grid-column: 1 / 2;
 }
 
+#leaveCommentText {
+    color: grey;
+}
+
+#commentFlex {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
 /*Profile Styling*/
 #profile {
-    background-color: #5E3932;
+    background-color: #C2C5AA;
     height: 100vh;
     padding: 100px;
-    display: grid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     gap: 20px;
-    grid-template-columns: 50% 50%;
-    grid-template-rows: 90% 10%;
 }
 
 #profileCreator {
@@ -267,9 +288,31 @@
     grid-row: 1 / 2;
     display: flex;
     flex-direction: column;
-    background-color: #DFBB7D;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #A4AC86;
     border-radius: 10px;
-    padding: 20px;
+    padding: 50px;
+    color: #333D29;
+    height: auto;
+    width: 600px;
+}
+
+#profileCreator p {
+    font-size: 20px;
+}
+
+#profileButtons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#profileCreator h1 {
+    padding-bottom: 10px;
 }
 
 .profileDisplay {
@@ -278,14 +321,21 @@
 }
 
 #profileCreator button {
-    background-color: #9181B3;
-    padding: 3px;
+    background-color: #414833;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 5px 10px 5px 10px;
     border-radius: 5px;
 }
 
 #profileCreator button:hover {
     color: white;
     transform: scale(1.1);
+}
+
+.profileDisplay {
+    display: flex; 
+    flex-direction: column;
+    gap: 20px;
 }
 
 .modal {
