@@ -265,6 +265,12 @@
     color: grey;
 }
 
+#commentFlex {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
 /*Profile Styling*/
 #profile {
     background-color: #C2C5AA;
