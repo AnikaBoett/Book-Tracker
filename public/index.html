@@ -224,10 +224,25 @@
                                 <p>{{review.body}}</p>
                                 <br>
                                 <div v-for="(comment, index) in comments"> 
-                                    <div v-if="comment.review === review._id">
+                                    <div id='commentField' v-if="comment.review === review._id">
+                                        <v-menu transition="scale-transition">
+                                            <template v-slot:activator="{ props: commentMenu }">
+                                                <div v-bind="commentMenu"> ^ </div>
+                                            </template>
+                                            <v-list>
+                                                <v-list-item>
+                                                    <vs-list-item-title @click="launchEditComment(index)">
+                                                        Edit Comment
+                                                    </v-list-item-title>
+                                                </v-list-item>
+                                                <v-list-item>
+                                                    <v-list-item-title @click="deleteComment(index)">
+                                                        Delete Comment
+                                                    </v-list-item-title>
+                                                </v-list-item>
+                                            </v-list>
+                                        </v-menu>
                                         {{comment.body}}
-                                        <button @click="launchEditComment(index)">Edit</button>
-                                        <button @click="deleteComment(index)">Delete</button>
                                     </div>
                                 </div>
                                 <input type="text" placeholder="Leave a Comment..." v-model="review.newComment">
