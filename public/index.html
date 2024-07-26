@@ -38,8 +38,10 @@
                         <h1 class="bigtext">Find Your Next Favorite Book</h1>
                         <div id="emailEntry">
                             <h2>Email</h2>
-                            <input type="email">
-                            <button>-></button>
+                            <div id="buttonGroup">
+                                <input type="email" v-model="user.email">
+                                <button @click="switchPage('signUp')">></button>
+                            </div>
                         </div>
                         <div id="splashLinkNav">
                             <a href="">
