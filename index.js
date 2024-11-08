@@ -416,6 +416,6 @@ app.put("/comments/:commentId", AuthMiddleware, async function (request, respons
         return response.status(500).send("Server error.")
     }
 })
-app.listen(5050, function () {
-    console.log("Server listening on http://localhost:5050.")
+app.listen(8080, function () {
+    console.log("Server listening on http://localhost:8080.")
 })
